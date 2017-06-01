@@ -1,7 +1,10 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 
+import { FilterType } from '../FilterType';
 import { Todo } from '../Todo';
+
+import { TodoFilter } from './TodoFilterComponent';
 import { TodoHeader } from './TodoHeaderComponent';
 import { Todos } from './TodosComponent';
 
@@ -10,6 +13,7 @@ interface ITodoRootProps {
 
 interface ITodoRootState {
     todos: Todo[];
+    filterType: FilterType;
 }
 
 export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
@@ -17,6 +21,7 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
         super(props);
 
         this.state = {
+            filterType: FilterType.All,
             todos: [],
         };
     }
@@ -25,13 +30,18 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
         return (
             <div>
                 <TodoHeader addTodo={(t) => this.addTodo(t)}></TodoHeader>
-                <Todos todos={this.state.todos} setCompleted={(t, e) => this.setCompleted(t, e)} ></Todos>
+                <Todos todos={this.filteredTodos()} setCompleted={(t, e) => this.setCompleted(t, e)} ></Todos>
+                <TodoFilter
+                    todos={this.state.todos}
+                    filterType={this.state.filterType}
+                    setFilterType={(ft) => this.setFilterType(ft)}
+                    clearCompleted={() => this.clearCompleted()}></TodoFilter>
             </div>
         );
     }
 
     public addTodo(todoText: string): void {
-        const newId = this.state.todos.length;
+        const newId = 1 + (_.max(this.state.todos.map((t) => t.id)) || 0);
         const newTodo = new Todo(newId, todoText);
         this.setState({ todos: (this.state.todos || []).concat([newTodo]) });
     }
@@ -45,5 +55,24 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
         });
 
         this.setState({ todos: nextTodos});
+    }
+
+    public setFilterType(filterType: FilterType): void {
+        this.setState({ filterType });
+    }
+
+    public filteredTodos(): Todo[] {
+        const filterType = this.state.filterType;
+
+        if (filterType === FilterType.Active) {
+            return this.state.todos.filter((t) => !t.completed);
+        } else if (filterType === FilterType.Completed) {
+            return this.state.todos.filter((t) => t.completed);
+        }
+        return this.state.todos;
+    }
+
+    public clearCompleted(): void {
+        this.setState({todos: this.state.todos.filter((t) => !t.completed)});
     }
 }
