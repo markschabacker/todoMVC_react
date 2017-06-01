@@ -35,7 +35,8 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
                     setCompleted={(t, e) => this.setCompleted(t, e)}
                     setAllCompleted={(e) => this.setAllCompleted(e)}
                     setEditing={(t, e) => this.setEditing(t, e)}
-                    updateText={(t, text) => this.updateText(t, text)}></Todos>
+                    updateText={(t, text) => this.updateText(t, text)}
+                    remove={(t) => this.removeTodo(t)}></Todos>
                 <TodoFilter
                     todos={this.state.todos}
                     filterType={this.state.filterType}
@@ -108,6 +109,11 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
             return t;
         });
 
+        this.setState({ todos: nextTodos});
+    }
+
+    public removeTodo(todo: Todo) {
+        const nextTodos = this.state.todos.filter((t) => t.id !== todo.id);
         this.setState({ todos: nextTodos});
     }
 }

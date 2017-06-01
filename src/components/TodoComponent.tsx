@@ -9,6 +9,7 @@ interface ITodoProps {
     setCompleted: (todo: TodoItem, completed: boolean) => void;
     setEditing: (todo: TodoItem, editing: boolean) => void;
     updateText: (todo: TodoItem, text: string) => void;
+    remove: (todo: TodoItem) => void;
 }
 
 interface ITodoState {
@@ -60,6 +61,8 @@ export class Todo extends React.Component<ITodoProps, ITodoState> {
                 <label key='text'
                         onDoubleClick={(e) => this.handleDoubleClick(e)}>{todo.text}</label>
 
+            ), (
+                <button key='destroy' className='destroy' onClick={(e) => this.handleRemoveClick(e)} />
             )];
         }
     }
@@ -99,5 +102,9 @@ export class Todo extends React.Component<ITodoProps, ITodoState> {
             return true;
         }
         return false;
+    }
+
+    private handleRemoveClick(e: React.MouseEvent<HTMLButtonElement>): void {
+        this.props.remove(this.props.todo);
     }
 }
