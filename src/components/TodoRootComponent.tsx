@@ -13,7 +13,7 @@ interface ITodoRootProps {
 
 interface ITodoRootState {
     todos: Todo[];
-    filterType: FilterType,
+    filterType: FilterType;
 }
 
 export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
@@ -21,8 +21,8 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
         super(props);
 
         this.state = {
-            todos: [],
             filterType: FilterType.All,
+            todos: [],
         };
     }
 
