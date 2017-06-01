@@ -1,12 +1,13 @@
 import * as React from 'react';
 
+import { Todo } from '../Todo';
 import { TodoHeader } from './TodoHeaderComponent';
 
 interface ITodoRootProps {
 }
 
 interface ITodoRootState {
-    todos: string[];
+    todos: Todo[];
 }
 
 export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
@@ -30,6 +31,6 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
     }
 
     public addTodo(todoText: string): void {
-        this.setState({ todos: (this.state.todos || []).concat([todoText])});
+        this.setState({ todos: (this.state.todos || []).concat([new Todo(todoText)])});
     }
 }
