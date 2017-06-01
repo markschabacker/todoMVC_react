@@ -1,7 +1,9 @@
+import * as _ from 'lodash';
 import * as React from 'react';
 
 import { Todo } from '../Todo';
 import { TodoHeader } from './TodoHeaderComponent';
+import { Todos } from './TodosComponent';
 
 interface ITodoRootProps {
 }
@@ -23,14 +25,25 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
         return (
             <div>
                 <TodoHeader addTodo={(t) => this.addTodo(t)}></TodoHeader>
-                <div>
-                    <pre>{ JSON.stringify(this.state.todos) }</pre>
-                </div>
+                <Todos todos={this.state.todos} setCompleted={(t, e) => this.setCompleted(t, e)} ></Todos>
             </div>
         );
     }
 
     public addTodo(todoText: string): void {
-        this.setState({ todos: (this.state.todos || []).concat([new Todo(todoText)])});
+        const newId = this.state.todos.length;
+        const newTodo = new Todo(newId, todoText);
+        this.setState({ todos: (this.state.todos || []).concat([newTodo]) });
+    }
+
+    public setCompleted(todo: Todo, completed: boolean) {
+        const nextTodos = this.state.todos.map((t) => {
+            if (t.id === todo.id) {
+                return _.assign({} as Todo, t, { completed });
+            }
+            return t;
+        });
+
+        this.setState({ todos: nextTodos});
     }
 }

@@ -1,5 +1,7 @@
 export class Todo {
-    constructor(public text: string) {
+    public completed: boolean;
 
+    constructor(public id: any, public text: string) {
+        this.completed = false;
     }
 }
