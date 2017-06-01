@@ -3,7 +3,7 @@ var webpack = require("webpack")
 module.exports = {
     entry: {
         app: "./src/index.ts",
-        vendor: ['lodash'],
+        vendor: ['lodash', 'react', 'react-dom'],
     },
     output: {
         filename: "[name].bundle.js",
