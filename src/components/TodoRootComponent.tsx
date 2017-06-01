@@ -30,7 +30,11 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
         return (
             <div>
                 <TodoHeader addTodo={(t) => this.addTodo(t)}></TodoHeader>
-                <Todos todos={this.filteredTodos()} setCompleted={(t, e) => this.setCompleted(t, e)} ></Todos>
+                <Todos
+                    todos={this.filteredTodos()}
+                    setCompleted={(t, e) => this.setCompleted(t, e)}
+                    setEditing={(t, e) => this.setEditing(t, e)}
+                    updateText={(t, text) => this.updateText(t, text)}></Todos>
                 <TodoFilter
                     todos={this.state.todos}
                     filterType={this.state.filterType}
@@ -74,5 +78,27 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
 
     public clearCompleted(): void {
         this.setState({todos: this.state.todos.filter((t) => !t.completed)});
+    }
+
+    public setEditing(todo: Todo, editing: boolean) {
+        const nextTodos = this.state.todos.map((t) => {
+            if (t.id === todo.id) {
+                return _.assign({} as Todo, t, { editing });
+            }
+            return t;
+        });
+
+        this.setState({ todos: nextTodos});
+    }
+
+    public updateText(todo: Todo, text: string) {
+        const nextTodos = this.state.todos.map((t) => {
+            if (t.id === todo.id) {
+                return _.assign({} as Todo, t, { text, editing: false });
+            }
+            return t;
+        });
+
+        this.setState({ todos: nextTodos});
     }
 }
