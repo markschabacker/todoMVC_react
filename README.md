@@ -1,2 +1,8 @@
-# webpack_typescript_template
-Framework agnostic webpack/typescript template
+# TodoMVC using React
+
+Test implementation of [TodoMVC](http://todomvc.com/) using:
+
+- [React](https://facebook.github.io/react/)
+- [webpack](https://webpack.github.io/)
+- [TypeScript](http://www.typescriptlang.org/)
+
