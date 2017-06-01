@@ -33,6 +33,7 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
                 <Todos
                     todos={this.filteredTodos()}
                     setCompleted={(t, e) => this.setCompleted(t, e)}
+                    setAllCompleted={(e) => this.setAllCompleted(e)}
                     setEditing={(t, e) => this.setEditing(t, e)}
                     updateText={(t, text) => this.updateText(t, text)}></Todos>
                 <TodoFilter
@@ -56,6 +57,14 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
                 return _.assign({} as Todo, t, { completed });
             }
             return t;
+        });
+
+        this.setState({ todos: nextTodos});
+    }
+
+    public setAllCompleted(completed: boolean) {
+        const nextTodos = this.state.todos.map((t) => {
+            return _.assign({} as Todo, t, { completed });
         });
 
         this.setState({ todos: nextTodos});

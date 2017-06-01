@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as React from 'react';
 
 import { Todo as TodoItem } from '../Todo';
@@ -8,6 +9,7 @@ interface ITodosProps {
     todos: TodoItem[];
 
     setCompleted: (todo: TodoItem, completed: boolean) => void;
+    setAllCompleted: (completed: boolean) => void;
     setEditing: (todo: TodoItem, editing: boolean) => void;
     updateText: (todo: TodoItem, text: string) => void;
 }
@@ -23,6 +25,8 @@ export class Todos extends React.Component<ITodosProps, ITodosState> {
             return null;
         }
 
+        const allCompleted = _.every(todos, (t) => t.completed);
+
         return (
             <section id='main'>
                 <ul id='todo-list'>
@@ -35,7 +39,16 @@ export class Todos extends React.Component<ITodosProps, ITodosState> {
                         ); })
                     }
                 </ul>
+                <input id='toggle-all'
+                        type='checkbox'
+                        checked={allCompleted}
+                        onChange={(e) => this.handleToggleAllChange(e)}></input>
             </section>
         );
+    }
+
+    private handleToggleAllChange(e: React.ChangeEvent<HTMLInputElement>) {
+        e.target.blur();
+        this.props.setAllCompleted(e.target.checked);
     }
 }
