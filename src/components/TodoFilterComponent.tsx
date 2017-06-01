@@ -8,6 +8,7 @@ interface ITodoFilterProps {
     todos: Todo[];
     filterType: FilterType;
     setFilterType: (filterType: FilterType) => void;
+    clearCompleted: () => void;
 }
 
 interface IFilterOption {
@@ -52,7 +53,11 @@ export class TodoFilter extends React.Component<ITodoFilterProps, ITodoFilterSta
                     }
                 </ul>
                 {(this.state.completedCount > 0)
-                    && <button id='clear-completed'>Clear Completed ({this.state.completedCount})</button>}
+                    && <button
+                        id='clear-completed'
+                        onClick={(e) => this.props.clearCompleted()}>
+                        Clear Completed ({this.state.completedCount})
+                        </button>}
             </footer>
         );
     }

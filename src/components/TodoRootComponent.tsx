@@ -34,13 +34,14 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
                 <TodoFilter
                     todos={this.state.todos}
                     filterType={this.state.filterType}
-                    setFilterType={(ft) => this.setFilterType(ft)}></TodoFilter>
+                    setFilterType={(ft) => this.setFilterType(ft)}
+                    clearCompleted={() => this.clearCompleted()}></TodoFilter>
             </div>
         );
     }
 
     public addTodo(todoText: string): void {
-        const newId = this.state.todos.length;
+        const newId = 1 + (_.max(this.state.todos.map((t) => t.id)) || 0);
         const newTodo = new Todo(newId, todoText);
         this.setState({ todos: (this.state.todos || []).concat([newTodo]) });
     }
@@ -69,5 +70,9 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
             return this.state.todos.filter((t) => t.completed);
         }
         return this.state.todos;
+    }
+
+    public clearCompleted(): void {
+        this.setState({todos: this.state.todos.filter((t) => !t.completed)});
     }
 }
