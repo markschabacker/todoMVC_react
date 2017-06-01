@@ -1,10 +1,18 @@
+var webpack = require("webpack")
+
 module.exports = {
-    entry: "./src/index.ts",
+    entry: {
+        app: "./src/index.ts",
+        vendor: ['lodash'],
+    },
     output: {
-        filename: "bundle.js",
+        filename: "[name].bundle.js",
         publicPath: "dist",
         path: __dirname + "/dist"
     },
+    plugins:[
+        new webpack.optimize.CommonsChunkPlugin({ names: ["vendor", "manifest" ] }),
+    ],
 
     devtool: "source-map",
 
