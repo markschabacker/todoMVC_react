@@ -35,7 +35,7 @@ export class TodoFilter extends React.Component<ITodoFilterProps, ITodoFilterSta
         return (
             <footer id='footer'>
                 <span id='todo-count'>
-                    <strong>{this.state.activeCount}</strong> items left
+                    <strong>{this.state.activeCount}</strong> {this.pluralize('item', this.state.activeCount)} left
                 </span>
                 <ul id='filters'>
                     {
@@ -84,5 +84,10 @@ export class TodoFilter extends React.Component<ITodoFilterProps, ITodoFilterSta
             activeCount: props.todos.filter((t) => !t.completed).length,
             completedCount: props.todos.filter((t) => t.completed).length,
         };
+    }
+
+    private pluralize(input: string, count: number): string {
+        return count === 1 ? input : input + 's';
+
     }
 }
