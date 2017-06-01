@@ -1,9 +1,11 @@
 import * as React from 'react';
 
-import { Todo } from '../Todo';
+import { Todo as TodoItem } from '../Todo';
+import { Todo } from './TodoComponent';
+
 
 interface ITodosProps {
-    todos: Todo[];
+    todos: TodoItem[];
 }
 
 interface ITodosState {
@@ -21,9 +23,7 @@ export class Todos extends React.Component<ITodosProps, ITodosState> {
             <section id='main'>
                 <ul id='todo-list'>
                     { todos.map((todo, index) => { return (
-                        <li key={index}>
-                            <label>{todo.text}</label>
-                        </li>
+                        <Todo key={index} todo={todo}></Todo>
                         ); })
                     }
                 </ul>
