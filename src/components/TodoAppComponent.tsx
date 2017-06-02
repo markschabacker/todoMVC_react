@@ -17,6 +17,12 @@ interface ITodoAppState {
     todos: Todo[];
 }
 
+interface ITodoUpdateProperties {
+    completed?: boolean;
+    editing?: boolean;
+    text?: string;
+}
+
 export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     constructor(props: ITodoAppProps) {
         super(props);
@@ -55,38 +61,39 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
         this.setState({ todos: (this.state.todos || []).concat([newTodo]) });
     }
 
-    public setCompleted(todo: Todo, completed: boolean) {
-        this.updateTodos((t) => t.id === todo.id, { completed });
+    public setCompleted(todoId: number, completed: boolean) {
+        this.updateTodo(todoId, { completed });
     }
 
     public setAllCompleted(completed: boolean) {
         this.updateTodos((t) => true, { completed });
     }
 
-    public setEditing(todo: Todo, editing: boolean) {
-        this.updateTodos((t) => t.id === todo.id, { editing });
+    public setEditing(todoId: number, editing: boolean) {
+        this.updateTodo(todoId, { editing });
     }
 
-    public updateText(todo: Todo, text: string) {
-        this.updateTodos((t) => t.id === todo.id, { text, editing: false });
+    public updateText(todoId: number, text: string) {
+        this.updateTodo(todoId, { text, editing: false });
     }
 
     public clearCompleted(): void {
         this.setState({todos: this.state.todos.filter((t) => !t.completed)});
     }
 
-    public removeTodo(todo: Todo) {
-        const nextTodos = this.state.todos.filter((t) => t.id !== todo.id);
+    public removeTodo(todoId: number) {
+        const nextTodos = this.state.todos.filter((t) => t.id !== todoId);
         this.setState({ todos: nextTodos});
     }
 
-    private updateTodos(
-        matcher: (todo: Todo) => boolean,
-        updatedProperties: { completed?: boolean; editing?: boolean; text?: string; },
-        ) {
+    private updateTodo(todoId: number, updateProperties: ITodoUpdateProperties): void {
+        this.updateTodos((t) => t.id === todoId, updateProperties);
+    }
+
+    private updateTodos(matcher: (todo: Todo) => boolean, updateProperties: ITodoUpdateProperties) {
         const nextTodos = this.state.todos.map((t) => {
             if (matcher(t)) {
-                return _.assign({} as Todo, t, updatedProperties);
+                return _.assign({} as Todo, t, updateProperties);
             }
             return t;
         });

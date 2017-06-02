@@ -6,10 +6,10 @@ import { Todo as TodoItem } from '../Todo';
 interface ITodoProps {
     todo: TodoItem;
 
-    setCompleted: (todo: TodoItem, completed: boolean) => void;
-    setEditing: (todo: TodoItem, editing: boolean) => void;
-    updateText: (todo: TodoItem, text: string) => void;
-    remove: (todo: TodoItem) => void;
+    setCompleted: (todoId: number, completed: boolean) => void;
+    setEditing: (todoId: number, editing: boolean) => void;
+    updateText: (todoId: number, text: string) => void;
+    remove: (todoId: number) => void;
 }
 
 interface ITodoState {
@@ -69,11 +69,11 @@ export class Todo extends React.Component<ITodoProps, ITodoState> {
 
     private handleCheckChange(e: React.ChangeEvent<HTMLInputElement>) {
         e.target.blur();
-        this.props.setCompleted(this.props.todo, e.target.checked);
+        this.props.setCompleted(this.props.todo.id, e.target.checked);
     }
 
     private handleDoubleClick(e: React.MouseEvent<HTMLLabelElement>) {
-        this.props.setEditing(this.props.todo, true);
+        this.props.setEditing(this.props.todo.id, true);
     }
 
     private handleItemTextChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -88,7 +88,7 @@ export class Todo extends React.Component<ITodoProps, ITodoState> {
 
     private handleItemTextBlur(e: React.FocusEvent<HTMLInputElement>): void {
         if (!this.updateItemText()) {
-            this.props.setEditing(this.props.todo, false);
+            this.props.setEditing(this.props.todo.id, false);
         }
     }
 
@@ -98,13 +98,13 @@ export class Todo extends React.Component<ITodoProps, ITodoState> {
 
     private updateItemText(): boolean {
         if (this.state.itemText && this.state.itemText.length) {
-            this.props.updateText(this.props.todo, this.state.itemText);
+            this.props.updateText(this.props.todo.id, this.state.itemText);
             return true;
         }
         return false;
     }
 
     private handleRemoveClick(e: React.MouseEvent<HTMLButtonElement>): void {
-        this.props.remove(this.props.todo);
+        this.props.remove(this.props.todo.id);
     }
 }

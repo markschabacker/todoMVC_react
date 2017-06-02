@@ -8,11 +8,11 @@ import { Todo } from './TodoComponent';
 interface ITodosProps {
     todos: TodoItem[];
 
-    setCompleted: (todo: TodoItem, completed: boolean) => void;
+    setCompleted: (todoId: number, completed: boolean) => void;
     setAllCompleted: (completed: boolean) => void;
-    setEditing: (todo: TodoItem, editing: boolean) => void;
-    updateText: (todo: TodoItem, text: string) => void;
-    remove: (todo: TodoItem) => void;
+    setEditing: (todoId: number, editing: boolean) => void;
+    updateText: (todoId: number, text: string) => void;
+    remove: (todoId: number) => void;
 }
 
 interface ITodosState {
