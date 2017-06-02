@@ -1,34 +1,27 @@
 import * as _ from 'lodash';
 import * as React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import { FilterType } from '../FilterType';
+import { IFilterRoute } from '../IFilterRoute';
 import { Todo } from '../Todo';
 
 interface ITodoFilterProps {
     todos: Todo[];
-    filterType: FilterType;
-    setFilterType: (filterType: FilterType) => void;
     clearCompleted: () => void;
-}
-
-interface IFilterOption {
-    name: string;
-    filterType: FilterType;
+    filterRoutes: IFilterRoute[];
 }
 
 interface ITodoFilterState {
     activeCount: number;
     completedCount: number;
-    filterOptions: IFilterOption[];
 }
 
 export class TodoFilter extends React.Component<ITodoFilterProps, ITodoFilterState> {
     constructor(props: ITodoFilterProps) {
         super(props);
 
-        this.state = _.assign({
-            filterOptions: this.calculateFilterOptions(),
-        }, this.getCountsForState(props));
+        this.state = this.getCountsForState(props);
     }
 
     public render(): JSX.Element | null {
@@ -39,14 +32,10 @@ export class TodoFilter extends React.Component<ITodoFilterProps, ITodoFilterSta
                 </span>
                 <ul id='filters'>
                     {
-                        this.state.filterOptions.map((fo) => {
+                        this.props.filterRoutes.map((fr) => {
                             return (
-                                <li key={fo.filterType}>
-                                    <a
-                                        className={fo.filterType === this.props.filterType ? 'selected' : ''}
-                                        onClick={(e) => this.props.setFilterType(fo.filterType)}>
-                                        {fo.name}
-                                    </a>
+                                <li key={fr.name}>
+                                    <NavLink activeClassName='selected' to={fr.path}>{fr.name}</NavLink>
                                 </li>
                             );
                         })
@@ -66,20 +55,7 @@ export class TodoFilter extends React.Component<ITodoFilterProps, ITodoFilterSta
         this.setState(this.getCountsForState(nextProps));
     }
 
-    private calculateFilterOptions(): IFilterOption[] {
-        const options: IFilterOption[] = [];
-        for (const n in FilterType) {
-            if (_.isNumber(FilterType[n])) {
-                options.push({
-                    filterType: (FilterType as any)[n],
-                    name: n,
-                });
-            }
-        }
-        return options;
-    }
-
-    private getCountsForState(props: ITodoFilterProps) {
+    private getCountsForState(props: ITodoFilterProps): ITodoFilterState {
         return {
             activeCount: props.todos.filter((t) => !t.completed).length,
             completedCount: props.todos.filter((t) => t.completed).length,

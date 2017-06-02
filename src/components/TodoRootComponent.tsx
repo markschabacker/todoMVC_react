@@ -1,7 +1,9 @@
 import * as _ from 'lodash';
 import * as React from 'react';
+import { HashRouter as Router, Link, Redirect, Route } from 'react-router-dom';
 
 import { FilterType } from '../FilterType';
+import { IFilterRoute } from '../IFilterRoute';
 import { Todo } from '../Todo';
 
 import { TodoFilter } from './TodoFilterComponent';
@@ -13,7 +15,6 @@ interface ITodoRootProps {
 
 interface ITodoRootState {
     todos: Todo[];
-    filterType: FilterType;
 }
 
 export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
@@ -21,28 +22,30 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
         super(props);
 
         this.state = {
-            filterType: FilterType.All,
             todos: [],
         };
     }
 
     public render(): JSX.Element | null {
+        const filterRoutes = this.calculateFilterRoutes();
+
         return (
-            <div>
-                <TodoHeader addTodo={(t) => this.addTodo(t)}></TodoHeader>
-                <Todos
-                    todos={this.filteredTodos()}
-                    setCompleted={(t, e) => this.setCompleted(t, e)}
-                    setAllCompleted={(e) => this.setAllCompleted(e)}
-                    setEditing={(t, e) => this.setEditing(t, e)}
-                    updateText={(t, text) => this.updateText(t, text)}
-                    remove={(t) => this.removeTodo(t)}></Todos>
-                <TodoFilter
-                    todos={this.state.todos}
-                    filterType={this.state.filterType}
-                    setFilterType={(ft) => this.setFilterType(ft)}
-                    clearCompleted={() => this.clearCompleted()}></TodoFilter>
-            </div>
+            <Router>
+                <div>
+                    <TodoHeader addTodo={(t) => this.addTodo(t)}></TodoHeader>
+                    { filterRoutes.map((fr) => {
+                        return <Route
+                                    key={fr.name}
+                                    path={fr.path}
+                                    render={() => this.getTodosComponentForFilterType(fr.filterType)} />;
+                    })}
+                    <Redirect from='/' to={'/' + filterRoutes[0].name} />
+                    <TodoFilter
+                        todos={this.state.todos}
+                        filterRoutes={filterRoutes}
+                        clearCompleted={() => this.clearCompleted()}></TodoFilter>
+                </div>
+            </Router>
         );
     }
 
@@ -69,21 +72,6 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
         });
 
         this.setState({ todos: nextTodos});
-    }
-
-    public setFilterType(filterType: FilterType): void {
-        this.setState({ filterType });
-    }
-
-    public filteredTodos(): Todo[] {
-        const filterType = this.state.filterType;
-
-        if (filterType === FilterType.Active) {
-            return this.state.todos.filter((t) => !t.completed);
-        } else if (filterType === FilterType.Completed) {
-            return this.state.todos.filter((t) => t.completed);
-        }
-        return this.state.todos;
     }
 
     public clearCompleted(): void {
@@ -115,5 +103,40 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
     public removeTodo(todo: Todo) {
         const nextTodos = this.state.todos.filter((t) => t.id !== todo.id);
         this.setState({ todos: nextTodos});
+    }
+
+    private filteredTodos(filterType: FilterType): Todo[] {
+        if (filterType === FilterType.Active) {
+            return this.state.todos.filter((t) => !t.completed);
+        } else if (filterType === FilterType.Completed) {
+            return this.state.todos.filter((t) => t.completed);
+        }
+        return this.state.todos;
+    }
+
+    private calculateFilterRoutes(): IFilterRoute[] {
+        const routes: IFilterRoute[] = [];
+        for (const n in FilterType) {
+            if (_.isNumber(FilterType[n])) {
+                routes.push({
+                    filterType: (FilterType as any)[n],
+                    name: n,
+                    path: `/${n}`,
+                });
+            }
+        }
+        return routes;
+    }
+
+    private getTodosComponentForFilterType(filterType: FilterType): JSX.Element {
+        return (
+            <Todos
+                todos={this.filteredTodos(filterType)}
+                setCompleted={(t, e) => this.setCompleted(t, e)}
+                setAllCompleted={(e) => this.setAllCompleted(e)}
+                setEditing={(t, e) => this.setEditing(t, e)}
+                updateText={(t, text) => this.updateText(t, text)}
+                remove={(t) => this.removeTodo(t)}></Todos>
+        );
     }
 }
