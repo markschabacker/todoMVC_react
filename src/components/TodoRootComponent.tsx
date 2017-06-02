@@ -6,7 +6,7 @@ import { FilterType } from '../FilterType';
 import { IFilterRoute } from '../IFilterRoute';
 import { Todo } from '../Todo';
 
-import { TodoFilter } from './TodoFilterComponent';
+import { TodoFooter } from './TodoFooterComponent';
 import { TodoHeader } from './TodoHeaderComponent';
 import { Todos } from './TodosComponent';
 
@@ -40,10 +40,10 @@ export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
                                     render={() => this.getTodosComponentForFilterType(fr.filterType)} />;
                     })}
                     <Redirect from='/' to={'/' + filterRoutes[0].name} />
-                    <TodoFilter
+                    <TodoFooter
                         todos={this.state.todos}
                         filterRoutes={filterRoutes}
-                        clearCompleted={() => this.clearCompleted()}></TodoFilter>
+                        clearCompleted={() => this.clearCompleted()} />
                 </div>
             </Router>
         );

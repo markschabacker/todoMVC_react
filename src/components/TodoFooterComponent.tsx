@@ -6,19 +6,19 @@ import { FilterType } from '../FilterType';
 import { IFilterRoute } from '../IFilterRoute';
 import { Todo } from '../Todo';
 
-interface ITodoFilterProps {
+interface ITodoFooterProps {
     todos: Todo[];
     clearCompleted: () => void;
     filterRoutes: IFilterRoute[];
 }
 
-interface ITodoFilterState {
+interface ITodoFooterState {
     activeCount: number;
     completedCount: number;
 }
 
-export class TodoFilter extends React.Component<ITodoFilterProps, ITodoFilterState> {
-    constructor(props: ITodoFilterProps) {
+export class TodoFooter extends React.Component<ITodoFooterProps, ITodoFooterState> {
+    constructor(props: ITodoFooterProps) {
         super(props);
 
         this.state = this.getCountsForState(props);
@@ -51,11 +51,11 @@ export class TodoFilter extends React.Component<ITodoFilterProps, ITodoFilterSta
         );
     }
 
-    public componentWillReceiveProps?(nextProps: Readonly<ITodoFilterProps>, nextContext: any): void{
+    public componentWillReceiveProps?(nextProps: Readonly<ITodoFooterProps>, nextContext: any): void {
         this.setState(this.getCountsForState(nextProps));
     }
 
-    private getCountsForState(props: ITodoFilterProps): ITodoFilterState {
+    private getCountsForState(props: ITodoFooterProps): ITodoFooterState {
         return {
             activeCount: props.todos.filter((t) => !t.completed).length,
             completedCount: props.todos.filter((t) => t.completed).length,
