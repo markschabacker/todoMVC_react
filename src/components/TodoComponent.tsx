@@ -7,12 +7,12 @@ interface ITodoProps {
     todo: TodoItem;
 
     setCompleted: (todoId: number, completed: boolean) => void;
-    setEditing: (todoId: number, editing: boolean) => void;
     updateText: (todoId: number, text: string) => void;
     remove: (todoId: number) => void;
 }
 
 interface ITodoState {
+    editing: boolean;
     itemText: string;
 }
 
@@ -21,6 +21,7 @@ export class Todo extends React.Component<ITodoProps, ITodoState> {
         super(props);
 
         this.state = {
+            editing: false,
             itemText: props.todo.text,
         };
     }
@@ -32,14 +33,14 @@ export class Todo extends React.Component<ITodoProps, ITodoState> {
     public render(): JSX.Element | null {
         const todo = this.props.todo;
         return (
-            <li className={`${todo.completed ? 'completed' : ''} ${todo.editing ? 'editing' : ''}`}>
+            <li className={`${todo.completed ? 'completed' : ''} ${this.state.editing ? 'editing' : ''}`}>
                 { this.getLIContents(todo) }
             </li>
         );
     }
 
     private getLIContents(todo: TodoItem): JSX.Element | JSX.Element[] {
-        if (todo.editing) {
+        if (this.state.editing) {
             return <input
                         className='edit'
                         value={this.state.itemText}
@@ -73,7 +74,7 @@ export class Todo extends React.Component<ITodoProps, ITodoState> {
     }
 
     private handleDoubleClick(e: React.MouseEvent<HTMLLabelElement>) {
-        this.props.setEditing(this.props.todo.id, true);
+        this.setState({editing: true});
     }
 
     private handleItemTextChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -87,21 +88,18 @@ export class Todo extends React.Component<ITodoProps, ITodoState> {
     }
 
     private handleItemTextBlur(e: React.FocusEvent<HTMLInputElement>): void {
-        if (!this.updateItemText()) {
-            this.props.setEditing(this.props.todo.id, false);
-        }
+        this.updateItemText();
     }
 
     private handleItemTextFocus(e: React.FocusEvent<HTMLInputElement>): void {
         e.currentTarget.select();
     }
 
-    private updateItemText(): boolean {
+    private updateItemText(): void {
         if (this.state.itemText && this.state.itemText.length) {
             this.props.updateText(this.props.todo.id, this.state.itemText);
-            return true;
         }
-        return false;
+        this.setState({editing: false});
     }
 
     private handleRemoveClick(e: React.MouseEvent<HTMLButtonElement>): void {

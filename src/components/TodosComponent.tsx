@@ -10,7 +10,6 @@ interface ITodosProps {
 
     setCompleted: (todoId: number, completed: boolean) => void;
     setAllCompleted: (completed: boolean) => void;
-    setEditing: (todoId: number, editing: boolean) => void;
     updateText: (todoId: number, text: string) => void;
     remove: (todoId: number) => void;
 }
@@ -35,7 +34,6 @@ export class Todos extends React.Component<ITodosProps, ITodosState> {
                         <Todo key={index}
                             todo={todo}
                             setCompleted={(t, e) => this.props.setCompleted(t, e) }
-                            setEditing={(t, e) => this.props.setEditing(t, e) }
                             updateText={(t, text) => this.props.updateText(t, text) }
                             remove={(t) => this.props.remove(t)}></Todo>
                         ); })

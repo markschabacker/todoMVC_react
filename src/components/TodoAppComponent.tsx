@@ -19,7 +19,6 @@ interface ITodoAppState {
 
 interface ITodoUpdateProperties {
     completed?: boolean;
-    editing?: boolean;
     text?: string;
 }
 
@@ -69,12 +68,8 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
         this.updateTodos((t) => true, { completed });
     }
 
-    public setEditing(todoId: number, editing: boolean) {
-        this.updateTodo(todoId, { editing });
-    }
-
     public updateText(todoId: number, text: string) {
-        this.updateTodo(todoId, { text, editing: false });
+        this.updateTodo(todoId, { text });
     }
 
     public clearCompleted(): void {
@@ -130,7 +125,6 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
                 todos={this.filteredTodos(filterType)}
                 setCompleted={(t, e) => this.setCompleted(t, e)}
                 setAllCompleted={(e) => this.setAllCompleted(e)}
-                setEditing={(t, e) => this.setEditing(t, e)}
                 updateText={(t, text) => this.updateText(t, text)}
                 remove={(t) => this.removeTodo(t)}></Todos>
         );
