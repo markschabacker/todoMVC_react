@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { TodoRoot } from './components/TodoRootComponent';
+import { TodoApp } from './components/TodoAppComponent';
 
-ReactDOM.render(React.createElement(TodoRoot), document.getElementById('todoapp'));
+ReactDOM.render(React.createElement(TodoApp), document.getElementById('todoapp'));
