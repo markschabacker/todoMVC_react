@@ -10,15 +10,15 @@ import { TodoFooter } from './TodoFooterComponent';
 import { TodoHeader } from './TodoHeaderComponent';
 import { Todos } from './TodosComponent';
 
-interface ITodoRootProps {
+interface ITodoAppProps {
 }
 
-interface ITodoRootState {
+interface ITodoAppState {
     todos: Todo[];
 }
 
-export class TodoRoot extends React.Component<ITodoRootProps, ITodoRootState> {
-    constructor(props: ITodoRootProps) {
+export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
+    constructor(props: ITodoAppProps) {
         super(props);
 
         this.state = {
