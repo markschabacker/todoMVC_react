@@ -8,7 +8,11 @@ interface ITodoUpdateProperties {
     text?: string;
 }
 
-function updateTodos(todos: Todo[], matcher: (todo: Todo) => boolean, updateProperties: ITodoUpdateProperties): Todo[] {
+function calculateStateWithUpdatedTodos(
+    todos: Todo[],
+    matcher: (todo: Todo) => boolean,
+    updateProperties: ITodoUpdateProperties,
+): Todo[] {
     return todos.map((t) => {
         if (matcher(t)) {
             return _.assign({} as Todo, t, updateProperties);
@@ -17,8 +21,12 @@ function updateTodos(todos: Todo[], matcher: (todo: Todo) => boolean, updateProp
     });
 }
 
-function updateTodo(todos: Todo[], todoId: number, updateProperties: ITodoUpdateProperties): Todo[] {
-    return updateTodos(todos, (t: Todo) => t.id === todoId, updateProperties);
+function calculateStateWithUpdatedTodo(
+    todos: Todo[],
+    todoId: number,
+    updateProperties: ITodoUpdateProperties,
+): Todo[] {
+    return calculateStateWithUpdatedTodos(todos, (t: Todo) => t.id === todoId, updateProperties);
 }
 
 export function todoReducer(state: Todo[] = [], action: todoActions.ITodoAction<any>): Todo[] {
@@ -30,17 +38,17 @@ export function todoReducer(state: Todo[] = [], action: todoActions.ITodoAction<
 
         case todoActions.SET_COMPLETION:
             const setCompletionPayload = (action as todoActions.ISetTodoCompletionAction).payload;
-            return updateTodo(state, setCompletionPayload.id, setCompletionPayload);
+            return calculateStateWithUpdatedTodo(state, setCompletionPayload.id, setCompletionPayload);
 
         case todoActions.SET_ALL_COMPLETION:
             const setAllCompletionPayload = (action as todoActions.ISetAllTodosCompletionAction).payload;
-            return updateTodos(state,
-                                (td) => td.completed !== setAllCompletionPayload.completed,
-                                setAllCompletionPayload);
+            return calculateStateWithUpdatedTodos(state,
+                                                    (td) => td.completed !== setAllCompletionPayload.completed,
+                                                    setAllCompletionPayload);
 
         case todoActions.SET_TEXT:
             const setTextPayload = (action as todoActions.ISetTodoCompletionAction).payload;
-            return updateTodo(state, setTextPayload.id, setTextPayload);
+            return calculateStateWithUpdatedTodo(state, setTextPayload.id, setTextPayload);
 
         case todoActions.REMOVE:
             const removePayload = (action as todoActions.IRemoveTodoAction).payload;
