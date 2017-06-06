@@ -22,18 +22,22 @@ interface ITodoAppState {
     todos: Todo[];
 }
 
-const store = createStore(todoReducer);
+const localStorageKey = 'todoState';
+const initialState = JSON.parse(localStorage.getItem(localStorageKey) || '[]');
+const store = createStore(todoReducer, initialState);
 
 export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     constructor(props: ITodoAppProps) {
         super(props);
 
         this.state = {
-            todos: [],
+            todos: store.getState(),
         };
 
         store.subscribe(() => {
-            this.setState({ todos: store.getState() });
+            const state = store.getState();
+            this.setState({ todos: state });
+            localStorage.setItem(localStorageKey, JSON.stringify(state));
         });
     }
 
