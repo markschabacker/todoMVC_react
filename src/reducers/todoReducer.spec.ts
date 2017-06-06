@@ -13,7 +13,7 @@ describe('Add Todo', () => {
     let nextState: Todo[];
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.addTodo(addTodoInput));
+        nextState = todoReducer(initialState, todoActions.ActionCreators.AddTodo.create(addTodoInput));
     });
 
     test('Does not modify the state', () => {

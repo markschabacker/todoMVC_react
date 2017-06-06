@@ -1,6 +1,5 @@
-import { Todo } from '../types/Todo';
+import { ActionCreator, Todo } from '../types';
 
-export let ADD_TODO: string = 'ADD_TODO';
 export let SET_COMPLETION: string = 'SET_COMPLETION';
 export let SET_ALL_COMPLETION: string = 'SET_ALL_COMPLETION';
 export let SET_TEXT: string = 'SET_TEXT';
@@ -12,10 +11,9 @@ export interface ITodoAction<T> {
     payload: T;
 }
 
-export interface IAddTodoAction extends ITodoAction<{ id: number, text: string }> { }
-
-export function addTodo(todo: { id: number, text: string }): IAddTodoAction {
-    return { type: ADD_TODO, payload: todo };
+export interface IAddTodoActionPayload {
+    id: number;
+    text: string;
 }
 
 export interface ISetTodoCompletionAction extends ITodoAction<{ id: number, completed: boolean }> { }
@@ -47,3 +45,7 @@ export interface IRemoveCompletedTodosAction extends ITodoAction<{}> { }
 export function removeCompleted(): IRemoveCompletedTodosAction {
     return { type: REMOVE_COMPLETED, payload: {} };
 }
+
+export const ActionCreators = {
+    AddTodo: new ActionCreator<'AddTodo', IAddTodoActionPayload>('AddTodo'),
+};

@@ -4,9 +4,9 @@ describe('Todo Actions', () => {
     describe('Should produce an action in the expected shape', () => {
         test('addTodo', () => {
             const input = { id: 42, text: 'testing' };
-            const result = todoActions.addTodo(input);
+            const result = todoActions.ActionCreators.AddTodo.create(input);
 
-            expect(result).toEqual({ type: todoActions.ADD_TODO, payload: input });
+            expect(result).toEqual({ type: todoActions.ActionCreators.AddTodo.type, payload: input });
         });
 
         test('setTodoCompletion', () => {

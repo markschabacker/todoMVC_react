@@ -30,10 +30,9 @@ function calculateStateWithUpdatedTodo(
 }
 
 export function todoReducer(state: Todo[] = [], action: todoActions.ITodoAction<any>): Todo[] {
-
     switch (action.type) {
-        case todoActions.ADD_TODO:
-            const addPayload = (action as todoActions.IAddTodoAction).payload;
+        case todoActions.ActionCreators.AddTodo.type:
+            const addPayload = action.payload as todoActions.IAddTodoActionPayload;
             return [...state, new Todo(addPayload.id, addPayload.text)];
 
         case todoActions.SET_COMPLETION:

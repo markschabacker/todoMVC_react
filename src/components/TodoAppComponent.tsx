@@ -51,7 +51,7 @@ class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
 
     public addTodo(todoText: string): void {
         const newId = 1 + (_.max(this.props.todos.map((t) => t.id)) || 0);
-        this.props.dispatch(todoActions.addTodo({ id: newId, text: todoText }));
+        this.props.dispatch(todoActions.ActionCreators.AddTodo.create({ id: newId, text: todoText }));
     }
 
     public setCompleted(todoId: number, completed: boolean) {
