@@ -16,6 +16,13 @@ describe('Todo Actions', () => {
             expect(result).toEqual({ type: todoActions.SET_COMPLETION, payload: input });
         });
 
+        test('setAllTodosCompletion', () => {
+            const completed = true;
+            const result = todoActions.setAllTodosCompletion(completed);
+
+            expect(result).toEqual({ type: todoActions.SET_ALL_COMPLETION, payload: { completed } });
+        });
+
         test('setTodoText', () => {
             const input = { id: 42, text: 'newText' };
             const result = todoActions.setTodoText(input);

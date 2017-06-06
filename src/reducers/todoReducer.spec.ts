@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 import * as todoActions from '../actions/todoActions';
 import { Todo } from '../Todo';
 import { todoReducer } from './todoReducer';
@@ -55,6 +57,43 @@ describe('Set Completion State', () => {
         const updatedTodo = nextState.filter((td) => td.id === targetTodo.id)[0];
         expect(updatedTodo).not.toBe(targetTodo);
         expect(updatedTodo).toMatchObject(completionInput);
+    });
+});
+
+describe('Set All Completion State', () => {
+    let nextState: Todo[];
+    const completed = false;
+
+    beforeEach(() => {
+        nextState = todoReducer(initialState, todoActions.setAllTodosCompletion(completed));
+    });
+
+    test('Does not modify the state', () => {
+        expect(nextState).not.toBe(initialState);
+    });
+
+    test('Does not change the length of the todos', () => {
+        expect(nextState.length).toEqual(initialState.length);
+    });
+
+    test('Does not modify todos already set to the target completion state', () => {
+        initialState.forEach((initialTodo, i) => {
+            if (initialTodo.completed === completed) {
+                expect(nextState[i]).toBe(initialTodo);
+            }
+        });
+    });
+
+    test('Modfiesy todos not set to the target completion state', () => {
+        initialState.forEach((initialTodo, i) => {
+            if (initialTodo.completed !== completed) {
+                const newTodo = nextState[i];
+
+                expect(newTodo).not.toBe(initialTodo);
+                expect(newTodo).toMatchObject(_.assign({} as Todo, initialTodo, { completed }));
+                expect(newTodo.completed).toEqual(completed);
+            }
+        });
     });
 });
 

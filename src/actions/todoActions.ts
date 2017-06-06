@@ -2,6 +2,7 @@ import { Todo } from '../Todo';
 
 export let ADD_TODO: string = 'ADD_TODO';
 export let SET_COMPLETION: string = 'SET_COMPLETION';
+export let SET_ALL_COMPLETION: string = 'SET_ALL_COMPLETION';
 export let SET_TEXT: string = 'SET_TEXT';
 export let REMOVE: string = 'REMOVE';
 export let REMOVE_COMPLETED: string = 'REMOVE_COMPLETED';
@@ -21,6 +22,12 @@ export interface ISetTodoCompletionAction extends ITodoAction<{ id: number, comp
 
 export function setTodoCompletion(todo: { id: number, completed: boolean }): ISetTodoCompletionAction {
     return { type: SET_COMPLETION, payload: todo };
+}
+
+export interface ISetAllTodosCompletionAction extends ITodoAction<{ completed: boolean }> { }
+
+export function setAllTodosCompletion(completed: boolean): ISetAllTodosCompletionAction {
+    return { type: SET_ALL_COMPLETION, payload: { completed } };
 }
 
 export interface ISetTodoTextAction extends ITodoAction<{ id: number, text: string }> { }
