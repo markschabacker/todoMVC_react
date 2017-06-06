@@ -51,8 +51,36 @@ describe('Set Completion State', () => {
         });
     });
 
-    test('Sets the modified state on the expected todo', () => {
+    test('Sets the completion state on the expected todo', () => {
         const updatedTodo = nextState.filter((td) => td.id === targetTodo.id)[0];
+        expect(updatedTodo).not.toBe(targetTodo);
         expect(updatedTodo).toMatchObject(completionInput);
+    });
+});
+
+describe('Set Text', () => {
+    let nextState: Todo[];
+    const textInput = { id: targetTodo.id, text: 'updated text' };
+
+    beforeEach(() => {
+        nextState = todoReducer(initialState, todoActions.setTodoText(textInput));
+    });
+
+    test('Does not modify the state', () => {
+        expect(nextState).not.toBe(initialState);
+    });
+
+    test('Does not modify other todos', () => {
+        nextState.forEach((td, i) => {
+            if (i !== targetTodoIndex) {
+                expect(nextState[i]).toBe(initialState[i]);
+            }
+        });
+    });
+
+    test('Sets the text on the expected todo', () => {
+        const updatedTodo = nextState.filter((td) => td.id === targetTodo.id)[0];
+        expect(updatedTodo).not.toBe(targetTodo);
+        expect(updatedTodo).toMatchObject(textInput);
     });
 });
