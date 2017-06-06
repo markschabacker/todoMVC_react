@@ -2,9 +2,7 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { FilterType } from '../FilterType';
-import { IFilterRoute } from '../IFilterRoute';
-import { Todo } from '../Todo';
+import { FilterType, IFilterRoute, Todo } from '../types';
 
 interface ITodoFooterProps {
     todos: Todo[];

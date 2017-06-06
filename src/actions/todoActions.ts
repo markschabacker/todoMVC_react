@@ -1,4 +1,4 @@
-import { Todo } from '../Todo';
+import { Todo } from '../types/Todo';
 
 export let ADD_TODO: string = 'ADD_TODO';
 export let SET_COMPLETION: string = 'SET_COMPLETION';

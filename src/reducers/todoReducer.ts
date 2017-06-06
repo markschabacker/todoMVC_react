@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 
 import * as todoActions from '../actions/todoActions';
-import { Todo } from '../Todo';
+import { Todo } from '../types';
 
 interface ITodoUpdateProperties {
     completed?: boolean;

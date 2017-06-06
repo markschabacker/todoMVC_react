@@ -6,10 +6,7 @@ import { configureStore } from '../store/configureStore';
 
 import * as todoActions from '../actions/todoActions';
 
-import { FilterType } from '../FilterType';
-import { IFilterRoute } from '../IFilterRoute';
-import { IRootState } from '../IRootState';
-import { Todo } from '../Todo';
+import { FilterType, IFilterRoute, IRootState, Todo } from '../types';
 
 import { TodoFooter } from './TodoFooterComponent';
 import { TodoHeader } from './TodoHeaderComponent';

@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 
-import { Todo as TodoItem } from '../Todo';
+import { Todo as TodoItem } from '../types';
 
 interface ITodoProps {
     todo: TodoItem;

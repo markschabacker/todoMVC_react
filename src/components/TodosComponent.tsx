@@ -1,9 +1,8 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 
-import { Todo as TodoItem } from '../Todo';
+import { Todo as TodoItem } from '../types';
 import { Todo } from './TodoComponent';
-
 
 interface ITodosProps {
     todos: TodoItem[];
