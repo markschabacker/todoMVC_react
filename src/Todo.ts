@@ -1,4 +1,4 @@
 export class Todo {
-    constructor(public id: number, public text: string, public completed: boolean = false) {
+    constructor(public readonly id: number, public readonly text: string, public readonly completed: boolean = false) {
     }
 }
