@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import { HashRouter as Router, Link, Redirect, Route } from 'react-router-dom';
 
-import { configureStore } from '../store/configureStore';
+import { configureStore, LocalStoragePersister } from '../store';
 
 import * as todoActions from '../actions/todoActions';
 
@@ -19,8 +19,8 @@ interface ITodoAppState {
     todos: Todo[];
 }
 
-const localStorageKey = 'todoState';
-const initialState: IRootState = JSON.parse(localStorage.getItem(localStorageKey) || '{ todos: [] }');
+const statePersistence = new LocalStoragePersister();
+const initialState = statePersistence.loadPersistedState();
 const store = configureStore(initialState);
 
 export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
@@ -34,7 +34,7 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
         store.subscribe(() => {
             const state = store.getState();
             this.setState({ todos: state.todos });
-            localStorage.setItem(localStorageKey, JSON.stringify(state));
+            statePersistence.persistState(state);
         });
     }
 
