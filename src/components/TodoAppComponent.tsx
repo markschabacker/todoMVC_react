@@ -2,10 +2,9 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import { HashRouter as Router, Link, Redirect, Route } from 'react-router-dom';
 
-import { createStore } from 'redux';
+import { configureStore } from '../store/configureStore';
 
 import * as todoActions from '../actions/todoActions';
-import { rootReducer } from '../reducers';
 
 import { FilterType } from '../FilterType';
 import { IFilterRoute } from '../IFilterRoute';
@@ -25,7 +24,7 @@ interface ITodoAppState {
 
 const localStorageKey = 'todoState';
 const initialState: IRootState = JSON.parse(localStorage.getItem(localStorageKey) || '{ todos: [] }');
-const store = createStore(rootReducer, initialState);
+const store = configureStore(initialState);
 
 export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     constructor(props: ITodoAppProps) {
