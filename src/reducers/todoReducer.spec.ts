@@ -105,3 +105,31 @@ describe('Remove Todo', () => {
         expect(matchingCount).toEqual(0);
     });
 });
+
+describe('Remove Completed', () => {
+    const completedInitialState = [
+        new Todo(1, '1', true),
+        new Todo(2, '2', false),
+        new Todo(3, '3', true),
+    ];
+    const completedCount = completedInitialState.filter((td) => td.completed).length;
+
+    let nextState: Todo[];
+
+    beforeEach(() => {
+        nextState = todoReducer(initialState, todoActions.removeCompleted());
+    });
+
+    test('Does not modify the state', () => {
+        expect(nextState).not.toBe(initialState);
+    });
+
+    it('Removes completed todos', () => {
+        expect(nextState.length).toEqual(initialState.length - completedCount);
+    });
+
+    it('Leaves non-completed TODOs', () => {
+        const remainingCompletedCount = nextState.filter((td) => td.completed).length;
+        expect(remainingCompletedCount).toEqual(0);
+    });
+});
