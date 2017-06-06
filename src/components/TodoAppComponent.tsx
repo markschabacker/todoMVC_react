@@ -2,6 +2,11 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import { HashRouter as Router, Link, Redirect, Route } from 'react-router-dom';
 
+import { createStore } from 'redux';
+
+import * as todoActions from '../actions/todoActions';
+import { todoReducer } from '../reducers/todoReducer';
+
 import { FilterType } from '../FilterType';
 import { IFilterRoute } from '../IFilterRoute';
 import { Todo } from '../Todo';
@@ -17,10 +22,7 @@ interface ITodoAppState {
     todos: Todo[];
 }
 
-interface ITodoUpdateProperties {
-    completed?: boolean;
-    text?: string;
-}
+const store = createStore(todoReducer);
 
 export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     constructor(props: ITodoAppProps) {
@@ -29,6 +31,10 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
         this.state = {
             todos: [],
         };
+
+        store.subscribe(() => {
+            this.setState({ todos: store.getState() });
+        });
     }
 
     public render(): JSX.Element | null {
@@ -56,44 +62,27 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
 
     public addTodo(todoText: string): void {
         const newId = 1 + (_.max(this.state.todos.map((t) => t.id)) || 0);
-        const newTodo = new Todo(newId, todoText);
-        this.setState({ todos: (this.state.todos || []).concat([newTodo]) });
+        store.dispatch(todoActions.addTodo({ id: newId, text: todoText }));
     }
 
     public setCompleted(todoId: number, completed: boolean) {
-        this.updateTodo(todoId, { completed });
+        store.dispatch(todoActions.setTodoCompletion({ id: todoId, completed }));
     }
 
     public setAllCompleted(completed: boolean) {
-        this.updateTodos((t) => true, { completed });
+        store.dispatch(todoActions.setAllTodosCompletion(completed));
     }
 
     public updateText(todoId: number, text: string) {
-        this.updateTodo(todoId, { text });
+        store.dispatch(todoActions.setTodoText({ id: todoId, text }));
     }
 
     public clearCompleted(): void {
-        this.setState({todos: this.state.todos.filter((t) => !t.completed)});
+        store.dispatch(todoActions.removeCompleted());
     }
 
     public removeTodo(todoId: number) {
-        const nextTodos = this.state.todos.filter((t) => t.id !== todoId);
-        this.setState({ todos: nextTodos});
-    }
-
-    private updateTodo(todoId: number, updateProperties: ITodoUpdateProperties): void {
-        this.updateTodos((t) => t.id === todoId, updateProperties);
-    }
-
-    private updateTodos(matcher: (todo: Todo) => boolean, updateProperties: ITodoUpdateProperties) {
-        const nextTodos = this.state.todos.map((t) => {
-            if (matcher(t)) {
-                return _.assign({} as Todo, t, updateProperties);
-            }
-            return t;
-        });
-
-        this.setState({ todos: nextTodos});
+        store.dispatch(todoActions.removeTodo(todoId));
     }
 
     private filteredTodos(filterType: FilterType): Todo[] {
