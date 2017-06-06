@@ -47,7 +47,7 @@ export function todoReducer(state: Todo[] = [], action: todoActions.ITodoAction<
             return state.filter((td) => td.id !== removePayload.id);
 
         case todoActions.REMOVE_COMPLETED:
-            return state.filter((td) => td.completed);
+            return state.filter((td) => !td.completed);
 
         default:
             return state;

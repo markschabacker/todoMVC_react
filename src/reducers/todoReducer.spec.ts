@@ -156,15 +156,15 @@ describe('Remove Completed', () => {
     let nextState: Todo[];
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.removeCompleted());
+        nextState = todoReducer(completedInitialState, todoActions.removeCompleted());
     });
 
     test('Does not modify the state', () => {
-        expect(nextState).not.toBe(initialState);
+        expect(nextState).not.toBe(completedInitialState);
     });
 
     it('Removes completed todos', () => {
-        expect(nextState.length).toEqual(initialState.length - completedCount);
+        expect(nextState.length).toEqual(completedInitialState.length - completedCount);
     });
 
     it('Leaves non-completed TODOs', () => {
