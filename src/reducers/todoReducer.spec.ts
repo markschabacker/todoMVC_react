@@ -84,3 +84,24 @@ describe('Set Text', () => {
         expect(updatedTodo).toMatchObject(textInput);
     });
 });
+
+describe('Remove Todo', () => {
+    let nextState: Todo[];
+
+    beforeEach(() => {
+        nextState = todoReducer(initialState, todoActions.removeTodo(targetTodo.id));
+    });
+
+    test('Does not modify the state', () => {
+        expect(nextState).not.toBe(initialState);
+    });
+
+    it('Removes a todo', () => {
+        expect(nextState.length).toEqual(initialState.length - 1);
+    });
+
+    it('Removes the expected todo', () => {
+        const matchingCount = nextState.filter((td) => td.id === targetTodo.id).length;
+        expect(matchingCount).toEqual(0);
+    });
+});
