@@ -11,9 +11,9 @@ describe('Todo Actions', () => {
 
         test('setTodoCompletion', () => {
             const input = { id: 42, completed: true };
-            const result = todoActions.setTodoCompletion(input);
+            const result = todoActions.ActionCreators.SetTodoCompletion.create(input);
 
-            expect(result).toEqual({ type: todoActions.SET_COMPLETION, payload: input });
+            expect(result).toEqual({ type: todoActions.ActionCreators.SetTodoCompletion.type, payload: input });
         });
 
         test('setAllTodosCompletion', () => {

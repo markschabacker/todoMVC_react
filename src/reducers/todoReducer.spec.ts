@@ -38,7 +38,7 @@ describe('Set Completion State', () => {
     const completionInput = { id: targetTodo.id, completed: true };
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.setTodoCompletion(completionInput));
+        nextState = todoReducer(initialState, todoActions.ActionCreators.SetTodoCompletion.create(completionInput));
     });
 
     test('Does not modify the state', () => {
