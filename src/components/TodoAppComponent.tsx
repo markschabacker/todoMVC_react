@@ -1,8 +1,7 @@
 import * as _ from 'lodash';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { HashRouter as Router, Link, Redirect, Route } from 'react-router-dom';
-
-import { configureStore, LocalStoragePersister } from '../store';
 
 import * as todoActions from '../actions/todoActions';
 
@@ -13,29 +12,18 @@ import { TodoHeader } from './TodoHeaderComponent';
 import { Todos } from './TodosComponent';
 
 interface ITodoAppProps {
+    todos: Todo[];
+    dispatch?: (action: any) => void;
 }
 
 interface ITodoAppState {
-    todos: Todo[];
 }
 
-const statePersistence = new LocalStoragePersister();
-const initialState = statePersistence.loadPersistedState();
-const store = configureStore(initialState);
-
-export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
+class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     constructor(props: ITodoAppProps) {
         super(props);
 
-        this.state = {
-            todos: store.getState().todos,
-        };
-
-        store.subscribe(() => {
-            const state = store.getState();
-            this.setState({ todos: state.todos });
-            statePersistence.persistState(state);
-        });
+        this.state = {};
     }
 
     public render(): JSX.Element | null {
@@ -53,7 +41,7 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
                     })}
                     <Redirect from='/' to={'/' + filterRoutes[0].name} />
                     <TodoFooter
-                        todos={this.state.todos}
+                        todos={this.props.todos}
                         filterRoutes={filterRoutes}
                         clearCompleted={() => this.clearCompleted()} />
                 </div>
@@ -62,37 +50,37 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     }
 
     public addTodo(todoText: string): void {
-        const newId = 1 + (_.max(this.state.todos.map((t) => t.id)) || 0);
-        store.dispatch(todoActions.addTodo({ id: newId, text: todoText }));
+        const newId = 1 + (_.max(this.props.todos.map((t) => t.id)) || 0);
+        this.props.dispatch(todoActions.addTodo({ id: newId, text: todoText }));
     }
 
     public setCompleted(todoId: number, completed: boolean) {
-        store.dispatch(todoActions.setTodoCompletion({ id: todoId, completed }));
+        this.props.dispatch(todoActions.setTodoCompletion({ id: todoId, completed }));
     }
 
     public setAllCompleted(completed: boolean) {
-        store.dispatch(todoActions.setAllTodosCompletion(completed));
+        this.props.dispatch(todoActions.setAllTodosCompletion(completed));
     }
 
     public updateText(todoId: number, text: string) {
-        store.dispatch(todoActions.setTodoText({ id: todoId, text }));
+        this.props.dispatch(todoActions.setTodoText({ id: todoId, text }));
     }
 
     public clearCompleted(): void {
-        store.dispatch(todoActions.removeCompleted());
+        this.props.dispatch(todoActions.removeCompleted());
     }
 
     public removeTodo(todoId: number) {
-        store.dispatch(todoActions.removeTodo(todoId));
+        this.props.dispatch(todoActions.removeTodo(todoId));
     }
 
     private filteredTodos(filterType: FilterType): Todo[] {
         if (filterType === FilterType.Active) {
-            return this.state.todos.filter((t) => !t.completed);
+            return this.props.todos.filter((t) => !t.completed);
         } else if (filterType === FilterType.Completed) {
-            return this.state.todos.filter((t) => t.completed);
+            return this.props.todos.filter((t) => t.completed);
         }
-        return this.state.todos;
+        return this.props.todos;
     }
 
     private calculateFilterRoutes(): IFilterRoute[] {
@@ -120,3 +108,12 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
         );
     }
 }
+
+function mapStateToProps(state: IRootState, ownProps: ITodoAppProps): ITodoAppProps {
+    return {
+        todos: state.todos,
+    };
+}
+
+const wrappedTodoApp = connect(mapStateToProps)(TodoApp);
+export { wrappedTodoApp as TodoApp };
