@@ -11,32 +11,32 @@ export interface ITodoAction<T> {
     payload: T;
 }
 
-export interface IAddTodoAction extends ITodoAction<{ todo: Todo }> { }
+export interface IAddTodoAction extends ITodoAction<{ id: number, text: string }> { }
 
-export function addTodo(todo: Todo): IAddTodoAction {
-    return { type: ADD_TODO, payload: { todo }};
+export function addTodo(todo: { id: number, text: string }): IAddTodoAction {
+    return { type: ADD_TODO, payload: todo };
 }
 
-export interface ISetTodoCompletionAction extends ITodoAction<{ todo: { id: number, completed: boolean }}> {}
+export interface ISetTodoCompletionAction extends ITodoAction<{ id: number, completed: boolean }> { }
 
-export function setTodoCompletion(todo: { id: number, completed: boolean}): ISetTodoCompletionAction {
-    return { type: SET_COMPLETION, payload: { todo }};
+export function setTodoCompletion(todo: { id: number, completed: boolean }): ISetTodoCompletionAction {
+    return { type: SET_COMPLETION, payload: todo };
 }
 
-export interface IUpdateTodoTextAction extends ITodoAction<{ todo: { id: number, text: string }}> {}
+export interface ISetTodoTextAction extends ITodoAction<{ id: number, text: string }> { }
 
-export function updateTodoText(todo: { id: number, text: string}): IUpdateTodoTextAction {
-    return { type: SET_TEXT, payload: { todo }};
+export function setTodoText(todo: { id: number, text: string }): ISetTodoTextAction {
+    return { type: SET_TEXT, payload: todo };
 }
 
-export interface IRemoveTodoAction extends ITodoAction<{ todo: { id: number }}> {}
+export interface IRemoveTodoAction extends ITodoAction<{ id: number }> { }
 
 export function removeTodo(id: number): IRemoveTodoAction {
-    return { type: REMOVE, payload: { todo: { id }}};
+    return { type: REMOVE, payload: { id } };
 }
 
-export interface IRemoveCompletedTodosAction extends ITodoAction<{}> {}
+export interface IRemoveCompletedTodosAction extends ITodoAction<{}> { }
 
 export function removeCompleted(): IRemoveCompletedTodosAction {
-    return { type: REMOVE_COMPLETED, payload: {}};
+    return { type: REMOVE_COMPLETED, payload: {} };
 }
