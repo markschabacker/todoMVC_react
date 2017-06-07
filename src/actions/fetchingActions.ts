@@ -1,4 +1,5 @@
 import { ActionCreator } from '../types';
+import { ActionCreators as TodoActionCreators } from './todoActions';
 
 import 'isomorphic-fetch';
 
@@ -11,7 +12,7 @@ const fetchServerData = {
             return fetch('/src/seedData.json')
                 .then((response) => response.json())
                 .then((json) => {
-                    console.log(json);
+                    dispatch(TodoActionCreators.SetTodos.create({ todos: json }));
                     dispatch(setFetching.create(false));
                 })
                 .catch((reason) => {
