@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import * as todoActions from '../actions/todoActions';
+import { ActionCreators } from '../actions/todoActions';
 import { Todo } from '../types';
 import { todoReducer } from './todoReducer';
 
@@ -13,7 +13,7 @@ describe('Add Todo', () => {
     let nextState: Todo[];
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.ActionCreators.AddTodo.create(addTodoInput));
+        nextState = todoReducer(initialState, ActionCreators.AddTodo.create(addTodoInput));
     });
 
     test('Does not modify the state', () => {
@@ -38,7 +38,7 @@ describe('Set Completion State', () => {
     const completionInput = { id: targetTodo.id, completed: true };
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.ActionCreators.SetTodoCompletion.create(completionInput));
+        nextState = todoReducer(initialState, ActionCreators.SetTodoCompletion.create(completionInput));
     });
 
     test('Does not modify the state', () => {
@@ -65,7 +65,7 @@ describe('Set All Completion State', () => {
     const completed = false;
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.ActionCreators.SetAllTodosCompletion.create({ completed }));
+        nextState = todoReducer(initialState, ActionCreators.SetAllTodosCompletion.create({ completed }));
     });
 
     test('Does not modify the state', () => {
@@ -102,7 +102,7 @@ describe('Set Text', () => {
     const textInput = { id: targetTodo.id, text: 'updated text' };
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.ActionCreators.SetTodoText.create(textInput));
+        nextState = todoReducer(initialState, ActionCreators.SetTodoText.create(textInput));
     });
 
     test('Does not modify the state', () => {
@@ -128,7 +128,7 @@ describe('Remove Todo', () => {
     let nextState: Todo[];
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.ActionCreators.RemoveTodo.create({ id: targetTodo.id }));
+        nextState = todoReducer(initialState, ActionCreators.RemoveTodo.create({ id: targetTodo.id }));
     });
 
     test('Does not modify the state', () => {
@@ -156,7 +156,7 @@ describe('Remove Completed', () => {
     let nextState: Todo[];
 
     beforeEach(() => {
-        nextState = todoReducer(completedInitialState, todoActions.ActionCreators.RemoveCompletedTodos.create({}));
+        nextState = todoReducer(completedInitialState, ActionCreators.RemoveCompletedTodos.create({}));
     });
 
     test('Does not modify the state', () => {

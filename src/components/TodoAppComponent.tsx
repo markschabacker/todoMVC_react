@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { HashRouter as Router, Link, Redirect, Route } from 'react-router-dom';
 
-import * as todoActions from '../actions/todoActions';
+import { ActionCreators } from '../actions/todoActions';
 
 import { FilterType, IFilterRoute, IRootState, Todo } from '../types';
 
@@ -51,27 +51,27 @@ class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
 
     public addTodo(todoText: string): void {
         const newId = 1 + (_.max(this.props.todos.map((t) => t.id)) || 0);
-        this.props.dispatch(todoActions.ActionCreators.AddTodo.create({ id: newId, text: todoText }));
+        this.props.dispatch(ActionCreators.AddTodo.create({ id: newId, text: todoText }));
     }
 
     public setCompleted(todoId: number, completed: boolean) {
-        this.props.dispatch(todoActions.ActionCreators.SetTodoCompletion.create({ id: todoId, completed }));
+        this.props.dispatch(ActionCreators.SetTodoCompletion.create({ id: todoId, completed }));
     }
 
     public setAllCompleted(completed: boolean) {
-        this.props.dispatch(todoActions.ActionCreators.SetAllTodosCompletion.create({ completed }));
+        this.props.dispatch(ActionCreators.SetAllTodosCompletion.create({ completed }));
     }
 
     public updateText(todoId: number, text: string) {
-        this.props.dispatch(todoActions.ActionCreators.SetTodoText.create({ id: todoId, text }));
+        this.props.dispatch(ActionCreators.SetTodoText.create({ id: todoId, text }));
     }
 
     public clearCompleted(): void {
-        this.props.dispatch(todoActions.ActionCreators.RemoveCompletedTodos.create({}));
+        this.props.dispatch(ActionCreators.RemoveCompletedTodos.create({}));
     }
 
     public removeTodo(todoId: number) {
-        this.props.dispatch(todoActions.ActionCreators.RemoveTodo.create({ id: todoId }));
+        this.props.dispatch(ActionCreators.RemoveTodo.create({ id: todoId }));
     }
 
     private filteredTodos(filterType: FilterType): Todo[] {
