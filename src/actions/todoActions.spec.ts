@@ -28,9 +28,9 @@ describe('Todo Actions', () => {
 
         test('setTodoText', () => {
             const input = { id: 42, text: 'newText' };
-            const result = todoActions.setTodoText(input);
+            const result = todoActions.ActionCreators.SetTodoText.create(input);
 
-            expect(result).toEqual({ type: todoActions.SET_TEXT, payload: input });
+            expect(result).toEqual({ type: todoActions.ActionCreators.SetTodoText.type, payload: input });
         });
 
         test('removeTodo', () => {

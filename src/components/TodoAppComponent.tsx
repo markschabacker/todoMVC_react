@@ -63,7 +63,7 @@ class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     }
 
     public updateText(todoId: number, text: string) {
-        this.props.dispatch(todoActions.setTodoText({ id: todoId, text }));
+        this.props.dispatch(todoActions.ActionCreators.SetTodoText.create({ id: todoId, text }));
     }
 
     public clearCompleted(): void {

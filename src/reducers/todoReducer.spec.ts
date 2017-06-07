@@ -102,7 +102,7 @@ describe('Set Text', () => {
     const textInput = { id: targetTodo.id, text: 'updated text' };
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.setTodoText(textInput));
+        nextState = todoReducer(initialState, todoActions.ActionCreators.SetTodoText.create(textInput));
     });
 
     test('Does not modify the state', () => {

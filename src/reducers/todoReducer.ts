@@ -45,8 +45,8 @@ export function todoReducer(state: Todo[] = [], action: todoActions.ITodoAction<
                                                     (td) => td.completed !== setAllCompletionPayload.completed,
                                                     setAllCompletionPayload);
 
-        case todoActions.SET_TEXT:
-            const setTextPayload = (action as todoActions.ISetTodoTextAction).payload;
+        case todoActions.ActionCreators.SetTodoText.type:
+            const setTextPayload = action.payload as todoActions.ISetTodoTextActionPayload;
             return calculateStateWithUpdatedTodo(state, setTextPayload.id, setTextPayload);
 
         case todoActions.REMOVE:
