@@ -5,7 +5,7 @@ import { HashRouter as Router, Link, Redirect, Route } from 'react-router-dom';
 
 import { returntypeof } from '../utils/returntypeof';
 
-import { ActionCreators } from '../actions/todoActions';
+import { FetchingActionCreators, TodoActionCreators } from '../actions';
 
 import { FilterType, IFilterRoute, IRootState, Todo } from '../types';
 
@@ -15,17 +15,19 @@ import { Todos } from './TodosComponent';
 
 const mapStateToProps = (state: IRootState) => {
     return {
+        fetching: state.fetching,
         todos: state.todos,
     };
 };
 
 const dispatchToProps = {
-    addTodo: ActionCreators.AddTodo.create,
-    removeCompletedTodos: ActionCreators.RemoveCompletedTodos.create,
-    removeTodo: ActionCreators.RemoveTodo.create,
-    setAllTodosCompletion: ActionCreators.SetAllTodosCompletion.create,
-    setTodoCompletion: ActionCreators.SetTodoCompletion.create,
-    setTodoText: ActionCreators.SetTodoText.create,
+    addTodo: TodoActionCreators.AddTodo.create,
+    removeCompletedTodos: TodoActionCreators.RemoveCompletedTodos.create,
+    removeTodo: TodoActionCreators.RemoveTodo.create,
+    setAllTodosCompletion: TodoActionCreators.SetAllTodosCompletion.create,
+    setFetching: FetchingActionCreators.SetFetching.create,
+    setTodoCompletion: TodoActionCreators.SetTodoCompletion.create,
+    setTodoText: TodoActionCreators.SetTodoText.create,
 };
 
 const stateProps = returntypeof(mapStateToProps);
@@ -43,22 +45,26 @@ class TodoApp extends React.Component<TodoAppProps, {}> {
 
         return (
             <Router>
-                <div>
-                    <TodoHeader
-                        addTodo={(t) => this.addTodo(t)}
-                        refresh={() => this.refresh() } />
-                    { filterRoutes.map((fr) => {
-                        return <Route
+                {this.props.fetching
+                    ? <div>fetching...</div>
+                    : (
+                        <div>
+                            <TodoHeader
+                                addTodo={(t) => this.addTodo(t)}
+                                refresh={() => this.refresh()} />
+                            {filterRoutes.map((fr) => {
+                                return <Route
                                     key={fr.name}
                                     path={fr.path}
                                     render={() => this.getTodosComponentForFilterType(fr.filterType)} />;
-                    })}
-                    <Redirect from='/' to={'/' + filterRoutes[0].name} />
-                    <TodoFooter
-                        todos={this.props.todos}
-                        filterRoutes={filterRoutes}
-                        clearCompleted={() => this.clearCompleted()} />
-                </div>
+                            })}
+                            <Redirect from='/' to={'/' + filterRoutes[0].name} />
+                            <TodoFooter
+                                todos={this.props.todos}
+                                filterRoutes={filterRoutes}
+                                clearCompleted={() => this.clearCompleted()} />
+                        </div>
+                    )}
             </Router>
         );
     }
@@ -88,7 +94,9 @@ class TodoApp extends React.Component<TodoAppProps, {}> {
     }
 
     public refresh() {
-        console.log('refresh');
+        // TODO: faking load
+        this.props.setFetching(true);
+        window.setTimeout(() => this.props.setFetching(false), 1000);
     }
 
     private filteredTodos(filterType: FilterType): Todo[] {
