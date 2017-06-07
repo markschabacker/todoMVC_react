@@ -29,7 +29,7 @@ function calculateStateWithUpdatedTodo(
     return calculateStateWithUpdatedTodos(todos, (t: Todo) => t.id === todoId, updateProperties);
 }
 
-export function todoReducer(state: Todo[] = [], action: todoActions.ITodoAction<any>): Todo[] {
+export function todoReducer(state: Todo[] = [], action: { type: string, payload: any }): Todo[] {
     switch (action.type) {
         case todoActions.ActionCreators.AddTodo.type:
             const addPayload = action.payload as todoActions.IAddTodoActionPayload;
@@ -53,7 +53,7 @@ export function todoReducer(state: Todo[] = [], action: todoActions.ITodoAction<
             const removePayload = action.payload as todoActions.IRemoveTodoActionPayload;
             return state.filter((td) => td.id !== removePayload.id);
 
-        case todoActions.REMOVE_COMPLETED:
+        case todoActions.ActionCreators.RemoveCompletedTodos.type:
             return state.filter((td) => !td.completed);
 
         default:

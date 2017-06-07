@@ -156,7 +156,7 @@ describe('Remove Completed', () => {
     let nextState: Todo[];
 
     beforeEach(() => {
-        nextState = todoReducer(completedInitialState, todoActions.removeCompleted());
+        nextState = todoReducer(completedInitialState, todoActions.ActionCreators.RemoveCompletedTodos.create({}));
     });
 
     test('Does not modify the state', () => {

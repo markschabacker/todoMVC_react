@@ -67,7 +67,7 @@ class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     }
 
     public clearCompleted(): void {
-        this.props.dispatch(todoActions.removeCompleted());
+        this.props.dispatch(todoActions.ActionCreators.RemoveCompletedTodos.create({}));
     }
 
     public removeTodo(todoId: number) {

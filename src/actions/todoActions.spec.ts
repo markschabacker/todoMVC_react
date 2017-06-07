@@ -41,9 +41,9 @@ describe('Todo Actions', () => {
         });
 
         test('removeCompleted', () => {
-            const result = todoActions.removeCompleted();
+            const result = todoActions.ActionCreators.RemoveCompletedTodos.create({});
 
-            expect(result).toEqual({ type: todoActions.REMOVE_COMPLETED, payload: {} });
+            expect(result).toEqual({ type: todoActions.ActionCreators.RemoveCompletedTodos.type, payload: {} });
         });
     });
 });
