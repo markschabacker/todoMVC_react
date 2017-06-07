@@ -6,7 +6,7 @@ import { todoReducer } from './todoReducer';
 
 const targetTodo: Todo = new Todo(2, 'todo 2', false);
 const targetTodoIndex = 1;
-const initialState: Todo[] = [new Todo(1, 'todo 1'), targetTodo];
+const initialState: Todo[] = [new Todo(1, 'todo 1', true), targetTodo];
 
 describe('Add Todo', () => {
     const addTodoInput = { text: 'addedTodo ' };
@@ -97,7 +97,8 @@ describe('Set All Completion State', () => {
         });
     });
 
-    test('Modfiesy todos not set to the target completion state', () => {
+    test('Modifies todos not set to the target completion state', () => {
+        let checkedCount = 0;
         initialState.forEach((initialTodo, i) => {
             if (initialTodo.completed !== completed) {
                 const newTodo = nextState[i];
@@ -105,8 +106,11 @@ describe('Set All Completion State', () => {
                 expect(newTodo).not.toBe(initialTodo);
                 expect(newTodo).toMatchObject({ ...initialTodo, completed });
                 expect(newTodo.completed).toEqual(completed);
+
+                checkedCount++;
             }
         });
+        expect(checkedCount).toBeGreaterThan(0);
     });
 });
 
