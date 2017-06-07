@@ -24,7 +24,7 @@ export class Todos extends React.Component<ITodosProps, ITodosState> {
             return null;
         }
 
-        const allCompleted = _.every(todos, (t) => t.completed);
+        const allCompleted = todos.every((t) => t.completed);
 
         return (
             <section id='main'>
