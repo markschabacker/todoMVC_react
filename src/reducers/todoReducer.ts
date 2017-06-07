@@ -1,5 +1,3 @@
-import * as _ from 'lodash';
-
 import * as todoActions from '../actions/todoActions';
 import { Todo } from '../types';
 
@@ -15,7 +13,7 @@ function calculateStateWithUpdatedTodos(
 ): Todo[] {
     return todos.map((t) => {
         if (matcher(t)) {
-            return _.assign({} as Todo, t, updateProperties);
+            return { ...t, ...updateProperties };
         }
         return t;
     });

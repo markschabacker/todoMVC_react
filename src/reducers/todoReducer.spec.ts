@@ -103,7 +103,7 @@ describe('Set All Completion State', () => {
                 const newTodo = nextState[i];
 
                 expect(newTodo).not.toBe(initialTodo);
-                expect(newTodo).toMatchObject(_.assign({} as Todo, initialTodo, { completed }));
+                expect(newTodo).toMatchObject({ ...initialTodo, completed });
                 expect(newTodo.completed).toEqual(completed);
             }
         });
