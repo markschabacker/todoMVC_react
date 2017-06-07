@@ -35,9 +35,9 @@ describe('Todo Actions', () => {
 
         test('removeTodo', () => {
             const id = 42;
-            const result = todoActions.removeTodo(id);
+            const result = todoActions.ActionCreators.RemoveTodo.create({ id });
 
-            expect(result).toEqual({ type: todoActions.REMOVE, payload: { id } });
+            expect(result).toEqual({ type: todoActions.ActionCreators.RemoveTodo.type, payload: { id } });
         });
 
         test('removeCompleted', () => {

@@ -128,7 +128,7 @@ describe('Remove Todo', () => {
     let nextState: Todo[];
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.removeTodo(targetTodo.id));
+        nextState = todoReducer(initialState, todoActions.ActionCreators.RemoveTodo.create({ id: targetTodo.id }));
     });
 
     test('Does not modify the state', () => {

@@ -49,8 +49,8 @@ export function todoReducer(state: Todo[] = [], action: todoActions.ITodoAction<
             const setTextPayload = action.payload as todoActions.ISetTodoTextActionPayload;
             return calculateStateWithUpdatedTodo(state, setTextPayload.id, setTextPayload);
 
-        case todoActions.REMOVE:
-            const removePayload = (action as todoActions.IRemoveTodoAction).payload;
+        case todoActions.ActionCreators.RemoveTodo.type:
+            const removePayload = action.payload as todoActions.IRemoveTodoActionPayload;
             return state.filter((td) => td.id !== removePayload.id);
 
         case todoActions.REMOVE_COMPLETED:

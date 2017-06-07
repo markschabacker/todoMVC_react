@@ -71,7 +71,7 @@ class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     }
 
     public removeTodo(todoId: number) {
-        this.props.dispatch(todoActions.removeTodo(todoId));
+        this.props.dispatch(todoActions.ActionCreators.RemoveTodo.create({ id: todoId }));
     }
 
     private filteredTodos(filterType: FilterType): Todo[] {
