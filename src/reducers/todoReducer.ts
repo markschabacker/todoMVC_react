@@ -29,32 +29,31 @@ function calculateStateWithUpdatedTodo(
     return calculateStateWithUpdatedTodos(todos, (t: Todo) => t.id === todoId, updateProperties);
 }
 
-export function todoReducer(state: Todo[] = [], action: todoActions.ITodoAction<any>): Todo[] {
-
+export function todoReducer(state: Todo[] = [], action: { type: string, payload: any }): Todo[] {
     switch (action.type) {
-        case todoActions.ADD_TODO:
-            const addPayload = (action as todoActions.IAddTodoAction).payload;
+        case todoActions.ActionCreators.AddTodo.type:
+            const addPayload = action.payload as todoActions.IAddTodoActionPayload;
             return [...state, new Todo(addPayload.id, addPayload.text)];
 
-        case todoActions.SET_COMPLETION:
-            const setCompletionPayload = (action as todoActions.ISetTodoCompletionAction).payload;
+        case todoActions.ActionCreators.SetTodoCompletion.type:
+            const setCompletionPayload = action.payload as todoActions.ISetTodoCompletionActionPayload;
             return calculateStateWithUpdatedTodo(state, setCompletionPayload.id, setCompletionPayload);
 
-        case todoActions.SET_ALL_COMPLETION:
-            const setAllCompletionPayload = (action as todoActions.ISetAllTodosCompletionAction).payload;
+        case todoActions.ActionCreators.SetAllTodosCompletion.type:
+            const setAllCompletionPayload = action.payload as todoActions.ISetAllTodosCompletionActionPayload;
             return calculateStateWithUpdatedTodos(state,
                                                     (td) => td.completed !== setAllCompletionPayload.completed,
                                                     setAllCompletionPayload);
 
-        case todoActions.SET_TEXT:
-            const setTextPayload = (action as todoActions.ISetTodoCompletionAction).payload;
+        case todoActions.ActionCreators.SetTodoText.type:
+            const setTextPayload = action.payload as todoActions.ISetTodoTextActionPayload;
             return calculateStateWithUpdatedTodo(state, setTextPayload.id, setTextPayload);
 
-        case todoActions.REMOVE:
-            const removePayload = (action as todoActions.IRemoveTodoAction).payload;
+        case todoActions.ActionCreators.RemoveTodo.type:
+            const removePayload = action.payload as todoActions.IRemoveTodoActionPayload;
             return state.filter((td) => td.id !== removePayload.id);
 
-        case todoActions.REMOVE_COMPLETED:
+        case todoActions.ActionCreators.RemoveCompletedTodos.type:
             return state.filter((td) => !td.completed);
 
         default:

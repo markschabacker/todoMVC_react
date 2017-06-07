@@ -1,49 +1,40 @@
-import { Todo } from '../types/Todo';
+import { ActionCreator, Todo } from '../types';
 
-export let ADD_TODO: string = 'ADD_TODO';
-export let SET_COMPLETION: string = 'SET_COMPLETION';
-export let SET_ALL_COMPLETION: string = 'SET_ALL_COMPLETION';
-export let SET_TEXT: string = 'SET_TEXT';
-export let REMOVE: string = 'REMOVE';
-export let REMOVE_COMPLETED: string = 'REMOVE_COMPLETED';
-
-export interface ITodoAction<T> {
-    type: string;
-    payload: T;
+export interface IAddTodoActionPayload {
+    id: number;
+    text: string;
 }
 
-export interface IAddTodoAction extends ITodoAction<{ id: number, text: string }> { }
-
-export function addTodo(todo: { id: number, text: string }): IAddTodoAction {
-    return { type: ADD_TODO, payload: todo };
+export interface ISetTodoCompletionActionPayload {
+    id: number;
+    completed: boolean;
 }
 
-export interface ISetTodoCompletionAction extends ITodoAction<{ id: number, completed: boolean }> { }
+export interface ISetAllTodosCompletionActionPayload {
+    completed: boolean;
+ }
 
-export function setTodoCompletion(todo: { id: number, completed: boolean }): ISetTodoCompletionAction {
-    return { type: SET_COMPLETION, payload: todo };
+export interface ISetTodoTextActionPayload {
+    id: number;
+    text: string;
 }
 
-export interface ISetAllTodosCompletionAction extends ITodoAction<{ completed: boolean }> { }
-
-export function setAllTodosCompletion(completed: boolean): ISetAllTodosCompletionAction {
-    return { type: SET_ALL_COMPLETION, payload: { completed } };
+export interface IRemoveTodoActionPayload {
+    id: number;
 }
 
-export interface ISetTodoTextAction extends ITodoAction<{ id: number, text: string }> { }
-
-export function setTodoText(todo: { id: number, text: string }): ISetTodoTextAction {
-    return { type: SET_TEXT, payload: todo };
+export interface IRemoveCompletedTodosActionPayload {
 }
 
-export interface IRemoveTodoAction extends ITodoAction<{ id: number }> { }
-
-export function removeTodo(id: number): IRemoveTodoAction {
-    return { type: REMOVE, payload: { id } };
-}
-
-export interface IRemoveCompletedTodosAction extends ITodoAction<{}> { }
-
-export function removeCompleted(): IRemoveCompletedTodosAction {
-    return { type: REMOVE_COMPLETED, payload: {} };
-}
+export const ActionCreators = {
+    AddTodo: new ActionCreator<'AddTodo', IAddTodoActionPayload>('AddTodo'),
+    RemoveCompletedTodos: new ActionCreator<'RemoveCompletedTodos', IRemoveCompletedTodosActionPayload>(
+        'RemoveCompletedTodos',
+    ),
+    RemoveTodo: new ActionCreator<'RemoveTodo', IRemoveTodoActionPayload>('RemoveTodo'),
+    SetAllTodosCompletion: new ActionCreator<'SetAllTodosCompletion', ISetAllTodosCompletionActionPayload>(
+        'SetAllTodosCompletion',
+    ),
+    SetTodoCompletion: new ActionCreator<'SetTodoCompletion', ISetTodoCompletionActionPayload>('SetTodoCompletion'),
+    SetTodoText: new ActionCreator<'SetTodoText', ISetTodoTextActionPayload>('SetTodoText'),
+};
