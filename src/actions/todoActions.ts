@@ -1,7 +1,6 @@
 import { ActionCreator, Todo } from '../types';
 
 export interface IAddTodoActionPayload {
-    id: number;
     text: string;
 }
 

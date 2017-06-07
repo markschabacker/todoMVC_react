@@ -9,11 +9,13 @@ const targetTodoIndex = 1;
 const initialState: Todo[] = [new Todo(1, 'todo 1'), targetTodo];
 
 describe('Add Todo', () => {
-    const addTodoInput = { id: 42, text: 'addedTodo ' };
+    const addTodoInput = { text: 'addedTodo ' };
     let nextState: Todo[];
+    let addedTodo: Todo;
 
     beforeEach(() => {
         nextState = todoReducer(initialState, ActionCreators.AddTodo.create(addTodoInput));
+        addedTodo = nextState[nextState.length - 1];
     });
 
     test('Does not modify the state', () => {
@@ -24,12 +26,23 @@ describe('Add Todo', () => {
         expect(nextState.length).toEqual(initialState.length + 1);
     });
 
-    test('Adds the expected todo to the state', () => {
-        expect(nextState[initialState.length]).toMatchObject(addTodoInput);
+    test('Adds a todo with the expected text to the state', () => {
+        expect(addedTodo).toMatchObject(addTodoInput);
     });
 
     test('Adds a non-completed todo', () => {
-        expect(nextState[initialState.length].completed).toBe(false);
+        expect(addedTodo.completed).toBe(false);
+    });
+
+    test('Adds a todo with a defined id to the state', () => {
+        expect(addedTodo.id).toBeDefined();
+    });
+
+    test('Adds a todo with a unique id to the state', () => {
+        const ids = nextState.map((td) => td.id);
+        const distinctIds = _.uniq(ids);
+
+        expect(distinctIds.length).toEqual(ids.length);
     });
 });
 

@@ -33,7 +33,8 @@ export function todoReducer(state: Todo[] = [], action: { type: string, payload:
     switch (action.type) {
         case todoActions.ActionCreators.AddTodo.type:
             const addPayload = action.payload as todoActions.IAddTodoActionPayload;
-            return [...state, new Todo(addPayload.id, addPayload.text)];
+            const nextId = state.reduce((max, todo) => Math.max(max, todo.id), -1) + 1;
+            return [...state, new Todo(nextId, addPayload.text)];
 
         case todoActions.ActionCreators.SetTodoCompletion.type:
             const setCompletionPayload = action.payload as todoActions.ISetTodoCompletionActionPayload;
