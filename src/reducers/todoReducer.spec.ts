@@ -189,3 +189,28 @@ describe('Remove Completed', () => {
         expect(remainingCompletedCount).toEqual(0);
     });
 });
+
+describe('Set Todos', () => {
+    const input = [
+        {
+            completed: false,
+            id: 0,
+            text: 'setTodo0',
+        },
+        {
+            completed: false,
+            id: 1,
+            text: 'setTodo1',
+        },
+    ];
+
+    let nextState: Todo[];
+
+    beforeEach(() => {
+        nextState = todoReducer(initialState, ActionCreators.SetTodos.create({ todos: input }));
+    });
+
+    it('sets the state to the payload', () => {
+        expect(nextState).toBe(input);
+    });
+});

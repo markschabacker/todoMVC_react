@@ -45,5 +45,23 @@ describe('Todo Actions', () => {
 
             expect(result).toEqual({ type: todoActions.ActionCreators.RemoveCompletedTodos.type, payload: {} });
         });
+
+        test('setTodos', () => {
+            const input = [
+                {
+                    completed: false,
+                    id: 0,
+                    text: 'setTodo0',
+                },
+                {
+                    completed: false,
+                    id: 1,
+                    text: 'setTodo1',
+                },
+            ];
+            const result = todoActions.ActionCreators.SetTodos.create({ todos: input });
+
+            expect(result).toEqual({ type: todoActions.ActionCreators.SetTodos.type, payload: { todos: input } });
+        });
     });
 });

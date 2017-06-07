@@ -54,6 +54,9 @@ export function todoReducer(state: Todo[] = [], action: { type: string, payload:
 
         case todoActions.ActionCreators.RemoveCompletedTodos.type:
             return state.filter((td) => !td.completed);
+        case todoActions.ActionCreators.SetTodos.type:
+            const setPayload = action.payload as todoActions.ISetTodosActionPayload;
+            return setPayload.todos;
 
         default:
             return state;

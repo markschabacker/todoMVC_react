@@ -25,6 +25,10 @@ export interface IRemoveTodoActionPayload {
 export interface IRemoveCompletedTodosActionPayload {
 }
 
+export interface ISetTodosActionPayload {
+    todos: Todo[];
+}
+
 export const ActionCreators = {
     AddTodo: new ActionCreator<'AddTodo', IAddTodoActionPayload>('AddTodo'),
     RemoveCompletedTodos: new ActionCreator<'RemoveCompletedTodos', IRemoveCompletedTodosActionPayload>(
@@ -36,4 +40,5 @@ export const ActionCreators = {
     ),
     SetTodoCompletion: new ActionCreator<'SetTodoCompletion', ISetTodoCompletionActionPayload>('SetTodoCompletion'),
     SetTodoText: new ActionCreator<'SetTodoText', ISetTodoTextActionPayload>('SetTodoText'),
+    SetTodos: new ActionCreator<'SetTodos', ISetTodosActionPayload>('SetTodos'),
 };
