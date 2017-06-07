@@ -22,16 +22,16 @@
   },
   "homepage": "https://github.com/markschabacker/webpack_typescript_template#readme",
   "jest": {
-      "transform": {
-          "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-      },
-      "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-      "moduleFileExtensions": [
-          "ts",
-          "tsx",
-          "js",
-          "json"
-      ]
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
   },
   "devDependencies": {
     "@types/jest": "^19.2.4",
@@ -48,17 +48,21 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "@types/isomorphic-fetch": "0.0.34",
     "@types/lodash": "^4.14.64",
     "@types/react": "^15.0.25",
     "@types/react-dom": "^15.5.0",
     "@types/react-redux": "^4.4.41",
     "@types/react-router-dom": "^4.0.4",
     "@types/redux": "^3.6.0",
+    "@types/redux-thunk": "^2.1.0",
+    "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0"
   }
 }

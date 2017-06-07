@@ -22,6 +22,7 @@ const mapStateToProps = (state: IRootState) => {
 
 const dispatchToProps = {
     addTodo: TodoActionCreators.AddTodo.create,
+    fetchServerData: FetchingActionCreators.FetchServerData.create,
     removeCompletedTodos: TodoActionCreators.RemoveCompletedTodos.create,
     removeTodo: TodoActionCreators.RemoveTodo.create,
     setAllTodosCompletion: TodoActionCreators.SetAllTodosCompletion.create,
@@ -94,9 +95,7 @@ class TodoApp extends React.Component<TodoAppProps, {}> {
     }
 
     public refresh() {
-        // TODO: faking load
-        this.props.setFetching(true);
-        window.setTimeout(() => this.props.setFetching(false), 1000);
+        this.props.fetchServerData();
     }
 
     private filteredTodos(filterType: FilterType): Todo[] {
