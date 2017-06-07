@@ -44,7 +44,9 @@ class TodoApp extends React.Component<TodoAppProps, {}> {
         return (
             <Router>
                 <div>
-                    <TodoHeader addTodo={(t) => this.addTodo(t)}></TodoHeader>
+                    <TodoHeader
+                        addTodo={(t) => this.addTodo(t)}
+                        refresh={() => this.refresh() } />
                     { filterRoutes.map((fr) => {
                         return <Route
                                     key={fr.name}
@@ -83,6 +85,10 @@ class TodoApp extends React.Component<TodoAppProps, {}> {
 
     public removeTodo(todoId: number) {
         this.props.removeTodo({ id: todoId });
+    }
+
+    public refresh() {
+        console.log('refresh');
     }
 
     private filteredTodos(filterType: FilterType): Todo[] {
