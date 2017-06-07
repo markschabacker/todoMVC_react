@@ -20,11 +20,9 @@ export interface ISetTodoCompletionActionPayload {
     completed: boolean;
 }
 
-export interface ISetAllTodosCompletionAction extends ITodoAction<{ completed: boolean }> { }
-
-export function setAllTodosCompletion(completed: boolean): ISetAllTodosCompletionAction {
-    return { type: SET_ALL_COMPLETION, payload: { completed } };
-}
+export interface ISetAllTodosCompletionActionPayload {
+    completed: boolean;
+ }
 
 export interface ISetTodoTextAction extends ITodoAction<{ id: number, text: string }> { }
 
@@ -46,5 +44,8 @@ export function removeCompleted(): IRemoveCompletedTodosAction {
 
 export const ActionCreators = {
     AddTodo: new ActionCreator<'AddTodo', IAddTodoActionPayload>('AddTodo'),
+    SetAllTodosCompletion: new ActionCreator<'SetAllTodosCompletion', ISetAllTodosCompletionActionPayload>(
+        'SetAllTodosCompletion',
+    ),
     SetTodoCompletion: new ActionCreator<'SetTodoCompletion', ISetTodoCompletionActionPayload>('SetTodoCompletion'),
 };

@@ -65,7 +65,7 @@ describe('Set All Completion State', () => {
     const completed = false;
 
     beforeEach(() => {
-        nextState = todoReducer(initialState, todoActions.setAllTodosCompletion(completed));
+        nextState = todoReducer(initialState, todoActions.ActionCreators.SetAllTodosCompletion.create({ completed }));
     });
 
     test('Does not modify the state', () => {

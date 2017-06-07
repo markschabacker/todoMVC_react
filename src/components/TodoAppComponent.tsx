@@ -59,7 +59,7 @@ class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     }
 
     public setAllCompleted(completed: boolean) {
-        this.props.dispatch(todoActions.setAllTodosCompletion(completed));
+        this.props.dispatch(todoActions.ActionCreators.SetAllTodosCompletion.create({ completed }));
     }
 
     public updateText(todoId: number, text: string) {

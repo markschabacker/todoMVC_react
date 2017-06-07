@@ -18,9 +18,12 @@ describe('Todo Actions', () => {
 
         test('setAllTodosCompletion', () => {
             const completed = true;
-            const result = todoActions.setAllTodosCompletion(completed);
+            const result = todoActions.ActionCreators.SetAllTodosCompletion.create({ completed });
 
-            expect(result).toEqual({ type: todoActions.SET_ALL_COMPLETION, payload: { completed } });
+            expect(result).toEqual({
+                payload: { completed },
+                type: todoActions.ActionCreators.SetAllTodosCompletion.type,
+            });
         });
 
         test('setTodoText', () => {

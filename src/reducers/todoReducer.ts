@@ -39,8 +39,8 @@ export function todoReducer(state: Todo[] = [], action: todoActions.ITodoAction<
             const setCompletionPayload = action.payload as todoActions.ISetTodoCompletionActionPayload;
             return calculateStateWithUpdatedTodo(state, setCompletionPayload.id, setCompletionPayload);
 
-        case todoActions.SET_ALL_COMPLETION:
-            const setAllCompletionPayload = (action as todoActions.ISetAllTodosCompletionAction).payload;
+        case todoActions.ActionCreators.SetAllTodosCompletion.type:
+            const setAllCompletionPayload = action.payload as todoActions.ISetAllTodosCompletionActionPayload;
             return calculateStateWithUpdatedTodos(state,
                                                     (td) => td.completed !== setAllCompletionPayload.completed,
                                                     setAllCompletionPayload);
