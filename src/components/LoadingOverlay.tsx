@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import '../../css/loading-overlay/loading-overlay.css';
+
 interface ILoadingOverlayProps {
     visible: boolean;
 }
