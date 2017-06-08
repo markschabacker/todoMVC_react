@@ -1,4 +1,5 @@
 var webpack = require("webpack")
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     entry: {
@@ -20,6 +21,7 @@ module.exports = {
             name: "manifest",
             minChunks: Infinity
         }),
+        new ExtractTextPlugin("[name].css"),
     ],
 
     devtool: "source-map",
@@ -39,6 +41,9 @@ module.exports = {
 
             // TSLint
             { test: /\.ts$/, enforce: 'pre', loader: 'tslint-loader', options: { emitErrors: true, failOnHint: true, }, },
+
+            // CSS
+            { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: "style-loader", use: "css-loader" }) },
         ]
     },
 };
