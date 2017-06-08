@@ -27,8 +27,8 @@ export class Todos extends React.Component<ITodosProps, ITodosState> {
         const allCompleted = todos.every((t) => t.completed);
 
         return (
-            <section id='main'>
-                <ul id='todo-list'>
+            <section className='main'>
+                <ul className='todo-list'>
                     { todos.map((todo, index) => { return (
                         <Todo key={index}
                             todo={todo}
@@ -38,7 +38,7 @@ export class Todos extends React.Component<ITodosProps, ITodosState> {
                         ); })
                     }
                 </ul>
-                <input id='toggle-all'
+                <input className='toggle-all'
                         type='checkbox'
                         checked={allCompleted}
                         onChange={(e) => this.handleToggleAllChange(e)}></input>

@@ -20,10 +20,10 @@ export class TodoHeader extends React.Component<ITodoHeaderProps, ITodoHeaderSta
 
     public render(): JSX.Element | null {
         return (
-            <header id='header'>
+            <header className='header'>
                 <h1>todos <a onClick={(e) => this.props.refresh()}>&#8635;</a></h1>
                 <input
-                    id='new-todo'
+                    className='new-todo'
                     value={this.state.inputValue}
                     onChange={(e) => this.inputChange(e)}
                     onKeyPress={(e) => this.keyPress(e)}
