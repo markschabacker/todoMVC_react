@@ -5,7 +5,7 @@ const localStorageKey = 'todoState';
 export class LocalStoragePersister {
 
     public loadPersistedState(): IRootState {
-        return JSON.parse(localStorage.getItem(localStorageKey) || '{ todos: [] }') as IRootState;
+        return JSON.parse(localStorage.getItem(localStorageKey) || '{ "todos": [] }') as IRootState;
     }
 
     public persistState(state: IRootState): void {
