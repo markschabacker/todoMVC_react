@@ -1,6 +1,9 @@
 import { ActionCreator } from '../types';
 import { ActionCreators as TodoActionCreators } from './todoActions';
 
+import { polyfill as promisePolyFill } from 'es6-promise';
+promisePolyFill();
+
 import 'isomorphic-fetch';
 
 const setFetching = new ActionCreator<'SetFetching', boolean>('SetFetching');
