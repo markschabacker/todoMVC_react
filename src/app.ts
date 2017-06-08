@@ -8,6 +8,7 @@ import { configureStore, LocalStoragePersister } from './store';
 import { TodoApp } from './components/TodoAppComponent';
 
 import 'todomvc-app-css/index.css';
+import '../css/app.css';
 
 const statePersistence = new LocalStoragePersister();
 const initialState = statePersistence.loadPersistedState();

@@ -21,7 +21,9 @@ export class TodoHeader extends React.Component<ITodoHeaderProps, ITodoHeaderSta
     public render(): JSX.Element | null {
         return (
             <header className='header'>
-                <h1>todos <a onClick={(e) => this.props.refresh()}>&#8635;</a></h1>
+                <h1>todos
+                    <a className='reload' onClick={(e) => this.props.refresh()} title='Reload from Server'>&#8635;</a>
+                </h1>
                 <input
                     className='new-todo'
                     value={this.state.inputValue}
