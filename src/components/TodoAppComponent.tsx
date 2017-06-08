@@ -9,6 +9,7 @@ import { FetchingActionCreators, TodoActionCreators } from '../actions';
 
 import { FilterType, IFilterRoute, IRootState, Todo } from '../types';
 
+import { LoadingOverlay } from './LoadingOverlay';
 import { TodoFooter } from './TodoFooterComponent';
 import { TodoHeader } from './TodoHeaderComponent';
 import { Todos } from './TodosComponent';
@@ -46,26 +47,23 @@ class TodoApp extends React.Component<TodoAppProps, {}> {
 
         return (
             <Router>
-                {this.props.fetching
-                    ? <div>fetching...</div>
-                    : (
-                        <div>
-                            <TodoHeader
-                                addTodo={(t) => this.addTodo(t)}
-                                refresh={() => this.refresh()} />
-                            {filterRoutes.map((fr) => {
-                                return <Route
-                                    key={fr.name}
-                                    path={fr.path}
-                                    render={() => this.getTodosComponentForFilterType(fr.filterType)} />;
-                            })}
-                            <Redirect from='/' to={'/' + filterRoutes[0].name} />
-                            <TodoFooter
-                                todos={this.props.todos}
-                                filterRoutes={filterRoutes}
-                                clearCompleted={() => this.clearCompleted()} />
-                        </div>
-                    )}
+                <div>
+                    <LoadingOverlay visible={this.props.fetching} />
+                    <TodoHeader
+                        addTodo={(t) => this.addTodo(t)}
+                        refresh={() => this.refresh()} />
+                    {filterRoutes.map((fr) => {
+                        return <Route
+                            key={fr.name}
+                            path={fr.path}
+                            render={() => this.getTodosComponentForFilterType(fr.filterType)} />;
+                    })}
+                    <Redirect from='/' to={'/' + filterRoutes[0].name} />
+                    <TodoFooter
+                        todos={this.props.todos}
+                        filterRoutes={filterRoutes}
+                        clearCompleted={() => this.clearCompleted()} />
+                </div>
             </Router>
         );
     }
