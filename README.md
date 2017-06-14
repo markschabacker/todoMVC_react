@@ -8,3 +8,8 @@ Test implementation of [TodoMVC](http://todomvc.com/) using:
 - [webpack](https://webpack.github.io/)
 - [TypeScript](http://www.typescriptlang.org/)
 
+### Alternate Implementations
+- [Vanilla React](https://github.com/markschabacker/todoMVC_react/tree/impl/no-redux)
+- [Redux](https://github.com/markschabacker/todoMVC_react/tree/impl/redux)
+- [Redux with Async Actions](https://github.com/markschabacker/todoMVC_react/tree/impl/redux-async)
+
