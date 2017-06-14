@@ -1,17 +1,27 @@
 var webpack = require("webpack")
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     entry: {
-        app: "./src/index.ts",
-        vendor: ['lodash', 'react', 'react-dom'],
+        app: "./src/app.ts",
     },
     output: {
         filename: "[name].bundle.js",
         publicPath: "dist",
         path: __dirname + "/dist"
     },
-    plugins:[
-        new webpack.optimize.CommonsChunkPlugin({ names: ["vendor", "manifest" ] }),
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "vendor",
+            minChunks: function (module) {
+                return module.context && module.context.indexOf("node_modules") !== -1;
+            }
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "manifest",
+            minChunks: Infinity
+        }),
+        new ExtractTextPlugin("[name].css"),
     ],
 
     devtool: "source-map",
@@ -31,6 +41,9 @@ module.exports = {
 
             // TSLint
             { test: /\.ts$/, enforce: 'pre', loader: 'tslint-loader', options: { emitErrors: true, failOnHint: true, }, },
+
+            // CSS
+            { test: /\.css$/, loader: ExtractTextPlugin.extract({ fallback: "style-loader", use: "css-loader" }) },
         ]
     },
 };

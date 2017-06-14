@@ -1,0 +1,26 @@
+.loading-overlay-visible {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-overlay-hidden {
+    display: none;
+}
+
+.loading-overlay-contents {
+    color: white;
+    padding: 10px;
+
+    border-radius: 5px;
+    border: solid black 1px;
+    background-color: #6e6e6e;
+}

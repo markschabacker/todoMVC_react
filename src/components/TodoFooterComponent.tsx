@@ -1,10 +1,7 @@
-import * as _ from 'lodash';
 import * as React from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { FilterType } from '../FilterType';
-import { IFilterRoute } from '../IFilterRoute';
-import { Todo } from '../Todo';
+import { FilterType, IFilterRoute, Todo } from '../types';
 
 interface ITodoFooterProps {
     todos: Todo[];
@@ -26,11 +23,11 @@ export class TodoFooter extends React.Component<ITodoFooterProps, ITodoFooterSta
 
     public render(): JSX.Element | null {
         return (
-            <footer id='footer'>
-                <span id='todo-count'>
+            <footer className='footer'>
+                <span className='todo-count'>
                     <strong>{this.state.activeCount}</strong> {this.pluralize('item', this.state.activeCount)} left
                 </span>
-                <ul id='filters'>
+                <ul className='filters'>
                     {
                         this.props.filterRoutes.map((fr) => {
                             return (
@@ -43,7 +40,7 @@ export class TodoFooter extends React.Component<ITodoFooterProps, ITodoFooterSta
                 </ul>
                 {(this.state.completedCount > 0)
                     && <button
-                        id='clear-completed'
+                        className='clear-completed'
                         onClick={(e) => this.props.clearCompleted()}>
                         Clear Completed ({this.state.completedCount})
                         </button>}

@@ -1,9 +1,8 @@
 import * as _ from 'lodash';
 import * as React from 'react';
 
-import { Todo as TodoItem } from '../Todo';
+import { Todo as TodoItem } from '../types';
 import { Todo } from './TodoComponent';
-
 
 interface ITodosProps {
     todos: TodoItem[];
@@ -25,11 +24,17 @@ export class Todos extends React.Component<ITodosProps, ITodosState> {
             return null;
         }
 
-        const allCompleted = _.every(todos, (t) => t.completed);
+        const allCompleted = todos.every((t) => t.completed);
 
         return (
-            <section id='main'>
-                <ul id='todo-list'>
+            <section className='main'>
+                <input className='toggle-all'
+                        id='toggle-all'
+                        type='checkbox'
+                        checked={allCompleted}
+                        onChange={(e) => this.handleToggleAllChange(e)} />
+                <label htmlFor='toggle-all'>Mark all as complete</label>
+                <ul className='todo-list'>
                     { todos.map((todo, index) => { return (
                         <Todo key={index}
                             todo={todo}
@@ -39,10 +44,6 @@ export class Todos extends React.Component<ITodosProps, ITodosState> {
                         ); })
                     }
                 </ul>
-                <input id='toggle-all'
-                        type='checkbox'
-                        checked={allCompleted}
-                        onChange={(e) => this.handleToggleAllChange(e)}></input>
             </section>
         );
     }

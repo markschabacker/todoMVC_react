@@ -2,6 +2,7 @@ import * as React from 'react';
 
 interface ITodoHeaderProps {
     addTodo: (todoText: string) => void;
+    refresh: () => void;
 }
 
 interface ITodoHeaderState {
@@ -19,10 +20,12 @@ export class TodoHeader extends React.Component<ITodoHeaderProps, ITodoHeaderSta
 
     public render(): JSX.Element | null {
         return (
-            <header id='header'>
-                <h1>todos</h1>
+            <header className='header'>
+                <h1>todos
+                    <a className='reload' onClick={(e) => this.props.refresh()} title='Reload from Server'>&#8635;</a>
+                </h1>
                 <input
-                    id='new-todo'
+                    className='new-todo'
                     value={this.state.inputValue}
                     onChange={(e) => this.inputChange(e)}
                     onKeyPress={(e) => this.keyPress(e)}

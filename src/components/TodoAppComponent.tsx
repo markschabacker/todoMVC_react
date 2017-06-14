@@ -1,34 +1,45 @@
 import * as _ from 'lodash';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { HashRouter as Router, Link, Redirect, Route } from 'react-router-dom';
 
-import { FilterType } from '../FilterType';
-import { IFilterRoute } from '../IFilterRoute';
-import { Todo } from '../Todo';
+import { returntypeof } from '../utils/returntypeof';
 
+import { FetchingActionCreators, TodoActionCreators } from '../actions';
+
+import { FilterType, IFilterRoute, IRootState, Todo } from '../types';
+
+import { LoadingOverlay } from './LoadingOverlay';
 import { TodoFooter } from './TodoFooterComponent';
 import { TodoHeader } from './TodoHeaderComponent';
 import { Todos } from './TodosComponent';
 
-interface ITodoAppProps {
-}
+const mapStateToProps = (state: IRootState) => {
+    return {
+        fetching: state.fetching,
+        todos: state.todos,
+    };
+};
 
-interface ITodoAppState {
-    todos: Todo[];
-}
+const dispatchToProps = {
+    addTodo: TodoActionCreators.AddTodo.create,
+    fetchServerData: FetchingActionCreators.FetchServerData.create,
+    removeCompletedTodos: TodoActionCreators.RemoveCompletedTodos.create,
+    removeTodo: TodoActionCreators.RemoveTodo.create,
+    setAllTodosCompletion: TodoActionCreators.SetAllTodosCompletion.create,
+    setFetching: FetchingActionCreators.SetFetching.create,
+    setTodoCompletion: TodoActionCreators.SetTodoCompletion.create,
+    setTodoText: TodoActionCreators.SetTodoText.create,
+};
 
-interface ITodoUpdateProperties {
-    completed?: boolean;
-    text?: string;
-}
+const stateProps = returntypeof(mapStateToProps);
+type TodoAppProps = typeof stateProps & typeof dispatchToProps;
 
-export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
-    constructor(props: ITodoAppProps) {
+class TodoApp extends React.Component<TodoAppProps, {}> {
+    constructor(props: TodoAppProps) {
         super(props);
 
-        this.state = {
-            todos: [],
-        };
+        this.state = {};
     }
 
     public render(): JSX.Element | null {
@@ -37,16 +48,19 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
         return (
             <Router>
                 <div>
-                    <TodoHeader addTodo={(t) => this.addTodo(t)}></TodoHeader>
-                    { filterRoutes.map((fr) => {
+                    <LoadingOverlay visible={this.props.fetching} />
+                    <TodoHeader
+                        addTodo={(t) => this.addTodo(t)}
+                        refresh={() => this.refresh()} />
+                    {filterRoutes.map((fr) => {
                         return <Route
-                                    key={fr.name}
-                                    path={fr.path}
-                                    render={() => this.getTodosComponentForFilterType(fr.filterType)} />;
+                            key={fr.name}
+                            path={fr.path}
+                            render={() => this.getTodosComponentForFilterType(fr.filterType)} />;
                     })}
                     <Redirect from='/' to={'/' + filterRoutes[0].name} />
                     <TodoFooter
-                        todos={this.state.todos}
+                        todos={this.props.todos}
                         filterRoutes={filterRoutes}
                         clearCompleted={() => this.clearCompleted()} />
                 </div>
@@ -55,54 +69,40 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
     }
 
     public addTodo(todoText: string): void {
-        const newId = 1 + (_.max(this.state.todos.map((t) => t.id)) || 0);
-        const newTodo = new Todo(newId, todoText);
-        this.setState({ todos: (this.state.todos || []).concat([newTodo]) });
+        this.props.addTodo({ text: todoText });
     }
 
     public setCompleted(todoId: number, completed: boolean) {
-        this.updateTodo(todoId, { completed });
+        this.props.setTodoCompletion({ id: todoId, completed });
     }
 
     public setAllCompleted(completed: boolean) {
-        this.updateTodos((t) => true, { completed });
+        this.props.setAllTodosCompletion({ completed });
     }
 
     public updateText(todoId: number, text: string) {
-        this.updateTodo(todoId, { text });
+        this.props.setTodoText({ id: todoId, text });
     }
 
     public clearCompleted(): void {
-        this.setState({todos: this.state.todos.filter((t) => !t.completed)});
+        this.props.removeCompletedTodos({});
     }
 
     public removeTodo(todoId: number) {
-        const nextTodos = this.state.todos.filter((t) => t.id !== todoId);
-        this.setState({ todos: nextTodos});
+        this.props.removeTodo({ id: todoId });
     }
 
-    private updateTodo(todoId: number, updateProperties: ITodoUpdateProperties): void {
-        this.updateTodos((t) => t.id === todoId, updateProperties);
-    }
-
-    private updateTodos(matcher: (todo: Todo) => boolean, updateProperties: ITodoUpdateProperties) {
-        const nextTodos = this.state.todos.map((t) => {
-            if (matcher(t)) {
-                return _.assign({} as Todo, t, updateProperties);
-            }
-            return t;
-        });
-
-        this.setState({ todos: nextTodos});
+    public refresh() {
+        this.props.fetchServerData();
     }
 
     private filteredTodos(filterType: FilterType): Todo[] {
         if (filterType === FilterType.Active) {
-            return this.state.todos.filter((t) => !t.completed);
+            return this.props.todos.filter((t) => !t.completed);
         } else if (filterType === FilterType.Completed) {
-            return this.state.todos.filter((t) => t.completed);
+            return this.props.todos.filter((t) => t.completed);
         }
-        return this.state.todos;
+        return this.props.todos;
     }
 
     private calculateFilterRoutes(): IFilterRoute[] {
@@ -130,3 +130,6 @@ export class TodoApp extends React.Component<ITodoAppProps, ITodoAppState> {
         );
     }
 }
+
+const wrappedTodoApp = connect(mapStateToProps, dispatchToProps)(TodoApp);
+export { wrappedTodoApp as TodoApp };

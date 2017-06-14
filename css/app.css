@@ -1,0 +1,7 @@
+a.reload {
+    cursor: pointer;
+}
+
+a.reload:hover {
+    color: red;
+}
